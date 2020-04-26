@@ -12,7 +12,7 @@ https://www.aclweb.org/anthology/D14-1181.pdf
 
 ## Reproduction Evaluation:
 Following guidelines from this paper: \
-https://papers.nips.cc/paper/8787-a-step-toward-quantifying-independently-reproducible-machine-learning-research.pdf \
+https://papers.nips.cc/paper/8787-a-step-toward-quantifying-independently-reproducible-machine-learning-research.pdf 
 
 
 **Rigor vs Empirical:** Empirical \
