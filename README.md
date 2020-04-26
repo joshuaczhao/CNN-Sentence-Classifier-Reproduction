@@ -8,9 +8,15 @@ https://www.aclweb.org/anthology/D14-1181.pdf
 ## Relevant links, databases, etc.
 *Vector Database (Google word2vec):* https://code.google.com/archive/p/word2vec \
 *Author's Codebase (Python 2 & Theano):* https://github.com/yoonkim/CNN_sentence \
-*Tensorflow Database (dennybritz):* https://github.com/dennybritz/cnn-text-classification-tf \
+*Tensorflow Database (dennybritz):* https://github.com/dennybritz/cnn-text-classification-tf
 
 ## Reproduction Evaluation:
+Following guidelines from this paper: \
+https://papers.nips.cc/paper/8787-a-step-toward-quantifying-independently-reproducible-machine-learning-research.pdf \
+\
+To be finished...
+
+
 
 ## Timeline:
 **By Week 4:**\
@@ -29,4 +35,4 @@ Begin writing documents\
 Reproducibility report\
 **By Week 9:** \
 Finish all tests and compare with the results from the paper\
-Finish writing documents\
+Finish writing documents
