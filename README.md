@@ -6,9 +6,9 @@
 https://www.aclweb.org/anthology/D14-1181.pdf
 
 ## Relevant links, databases, etc.
-*Vector Database (Google word2vec):* https://code.google.com/archive/p/word2vec
-*Author's Codebase (Python 2 & Theano):* https://github.com/yoonkim/CNN_sentence
-*Tensorflow Database (dennybritz):* https://github.com/dennybritz/cnn-text-classification-tf 
+*Vector Database (Google word2vec):* https://code.google.com/archive/p/word2vec \
+*Author's Codebase (Python 2 & Theano):* https://github.com/yoonkim/CNN_sentence \
+*Tensorflow Database (dennybritz):* https://github.com/dennybritz/cnn-text-classification-tf \
 
 ## Reproduction Evaluation:
 
