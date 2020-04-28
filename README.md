@@ -10,9 +10,9 @@ https://www.aclweb.org/anthology/D14-1181.pdf
 *Author's Codebase (Python 2 & Theano):* https://github.com/yoonkim/CNN_sentence \
 *Tensorflow Database (dennybritz):* https://github.com/dennybritz/cnn-text-classification-tf \
 *Comparative Study of CNN and RNN for Natural Language Processing* https://arxiv.org/abs/1702.01923 \
-*CNN Features off-the-shelf: an Astounding Baseline for Recognition (Off the shelf CNN experiments inspiration)* https://arxiv.org/abs/1403.6382 \ 
-*Natural Language Processing (Almost) from Scratch (CNN Architecture Inspiration)* http://www.jmlr.org/papers/volume12/collobert11a/collobert11a.pdf \
-*A Sensitivity Analysis of (and Practitioners' Guide to) Convolutional Neural Networks for Sentence Classification* https://arxiv.org/abs/1510.03820
+*CNN Features off-the-shelf: an Astounding Baseline for Recognition* https://arxiv.org/abs/1403.6382 \ 
+*Natural Language Processing (Almost) from Scratch* http://www.jmlr.org/papers/volume12/collobert11a/collobert11a.pdf \
+*A Sensitivity Analysis of Convolutional Neural Networks for Sentence Classification* https://arxiv.org/abs/1510.03820
 
 ## Reproduction Evaluation:
 Following guidelines from this paper: \
