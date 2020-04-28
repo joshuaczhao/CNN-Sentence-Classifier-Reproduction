@@ -39,9 +39,7 @@ Begin training networks/running tests \
 **By Week 7:** \
 Check results\
 Rerun any tests that differ from paper results significantly\
-Begin writing documents\
-“Tips and Tricks for Training X”\
-Reproducibility report\
+Begin writing documents: “Tips and Tricks for Training X” & Reproducibility report
 **By Week 9:** \
 Finish all tests and compare with the results from the paper\
 Finish writing documents
