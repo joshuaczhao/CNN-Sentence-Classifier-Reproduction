@@ -12,7 +12,16 @@ https://www.aclweb.org/anthology/D14-1181.pdf
 *Comparative Study of CNN and RNN for Natural Language Processing* https://arxiv.org/abs/1702.01923 \
 *CNN Features off-the-shelf: an Astounding Baseline for Recognition* https://arxiv.org/abs/1403.6382 \ 
 *Natural Language Processing (Almost) from Scratch* http://www.jmlr.org/papers/volume12/collobert11a/collobert11a.pdf \
-*A Sensitivity Analysis of Convolutional Neural Networks for Sentence Classification* https://arxiv.org/abs/1510.03820
+*A Sensitivity Analysis of Convolutional Neural Networks for Sentence Classification* https://arxiv.org/abs/1510.03820 \
+\
+**Datasets:** \
+*MR:* \
+*SST-1:* \
+*SST-2:* \
+*Subj:* \
+*TREC:* \
+*CR:* \
+*MPQA:* 
 
 ## Reproduction Evaluation:
 Following guidelines from this paper: \
