@@ -23,7 +23,7 @@
 *MPQA:* 
 
 ## Reproduction Evaluation:
-Following guidelines from [this paper](https://papers.nips.cc/paper/8787-a-step-toward-quantifying-independently-reproducible-machine-learning-research.pdf)
+Following guidelines from: [*Raff, Edward. "A Step Toward Quantifying Independently Reproducible Machine Learning Research". NeurIPS (2019).*](https://papers.nips.cc/paper/8787-a-step-toward-quantifying-independently-reproducible-machine-learning-research.pdf)
 
 
 **Rigor vs Empirical:** Empirical \
