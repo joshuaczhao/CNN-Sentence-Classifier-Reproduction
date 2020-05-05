@@ -2,17 +2,16 @@
 **Authors:** Thomas Young, David Zane, Joshua Zhao
 
 ## This repository is a reproduction of this paper:
-*Kim, Yoon. "Convolutional Neural Networks for Sentence Classification". EMNLP (2014).*
-https://www.aclweb.org/anthology/D14-1181.pdf
+[*Kim, Yoon. "Convolutional Neural Networks for Sentence Classification". EMNLP (2014).*](https://www.aclweb.org/anthology/D14-1181.pdf)
 
 ## Relevant links, databases, etc.
-*Vector Database (Google word2vec):* https://code.google.com/archive/p/word2vec \
-*Author's Codebase (Python 2 & Theano):* https://github.com/yoonkim/CNN_sentence \
-*Tensorflow Database (dennybritz):* https://github.com/dennybritz/cnn-text-classification-tf \
-*Comparative Study of CNN and RNN for Natural Language Processing* https://arxiv.org/abs/1702.01923 \
-*CNN Features off-the-shelf: an Astounding Baseline for Recognition* https://arxiv.org/abs/1403.6382 \ 
-*Natural Language Processing (Almost) from Scratch* http://www.jmlr.org/papers/volume12/collobert11a/collobert11a.pdf \
-*A Sensitivity Analysis of Convolutional Neural Networks for Sentence Classification* https://arxiv.org/abs/1510.03820 \
+[Vector Database (Google word2vec)](https://code.google.com/archive/p/word2vec) \
+[Author's Codebase (Python 2 & Theano)](https://github.com/yoonkim/CNN_sentence) \
+[Tensorflow Database (dennybritz)](https://github.com/dennybritz/cnn-text-classification-tf) \
+[Comparative Study of CNN and RNN for Natural Language Processing](https://arxiv.org/abs/1702.01923) \
+[CNN Features off-the-shelf: an Astounding Baseline for Recognition](https://arxiv.org/abs/1403.6382) \ 
+[Natural Language Processing (Almost) from Scratch](http://www.jmlr.org/papers/volume12/collobert11a/collobert11a.pdf) \
+[A Sensitivity Analysis of Convolutional Neural Networks for Sentence Classification](https://arxiv.org/abs/1510.03820) \
 \
 **Datasets:** \
 *MR:* \
@@ -24,8 +23,7 @@ https://www.aclweb.org/anthology/D14-1181.pdf
 *MPQA:* 
 
 ## Reproduction Evaluation:
-Following guidelines from this paper: \
-https://papers.nips.cc/paper/8787-a-step-toward-quantifying-independently-reproducible-machine-learning-research.pdf 
+Following guidelines from [this paper](https://papers.nips.cc/paper/8787-a-step-toward-quantifying-independently-reproducible-machine-learning-research.pdf)
 
 
 **Rigor vs Empirical:** Empirical \
