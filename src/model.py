@@ -7,7 +7,11 @@ class Net(nn.Module):
         super(Net, self).__init__()
 
         # Embedding layer
-
+        path = 'data/embedding_models/GoogleNews-vectors-negative300.bin'
+        # path = 'data/embedding_models/glove.twitter.27B/converted_25d.txt'
+        model = KeyedVectors.load_word2vec_format(path)
+        weights = torch.FloatTensor(model.vectors)
+        self.embedding = nn.Embedding.from_pretrianed(weights)
 
         self.conv1 = nn.Conv2d(3, 6, 5)
         self.pool = nn.MaxPool2d(2, 2)
@@ -17,6 +21,10 @@ class Net(nn.Module):
         self.fc3 = nn.Linear(84, 10)
 
     def forward(self, x):
+
+        # get word embeddings
+        x = self.embedding(x)
+
         x = self.pool(F.relu(self.conv1(x)))
         x = self.pool(F.relu(self.conv2(x)))
         x = x.view(-1, 16 * 5 * 5)
