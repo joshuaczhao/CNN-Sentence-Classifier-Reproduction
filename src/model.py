@@ -26,9 +26,13 @@ class Net(nn.Module):
         # path = 'data/embedding_models/glove.twitter.27B/converted_25d.txt'
         model = KeyedVectors.load_word2vec_format(path)
         weights = torch.FloatTensor(model.vectors)
+<<<<<<< HEAD
         self.embedding = nn.Embedding.from_pretrianed(weights)
+=======
+        self.embedding = nn.Embedding.from_pretrained(weights,. )
+>>>>>>> 8f7f7f919e532a1f0beeb824c15534f7acbf9f01
         
-        if TYPE == 'STATIC':
+        if M_TYPE == 'STATIC':
             self.embedding.weight.requires_grad = False  
 
         '''
