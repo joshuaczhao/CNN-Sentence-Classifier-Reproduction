@@ -88,8 +88,8 @@ def train_model(args):
 
         train_loss = np.mean(one_epoch_loss_history)
         train_acc = np.mean(one_epoch_acc_history)
-        print(f'TRAIN ACC: {train_acc:.4f}', file=f)
-        print(f'TRAIN ACC: {train_acc:.4f}')
+        print(f'TRAIN LOSS: {train_loss:.4f} TRAIN ACC: {train_acc:.4f}', file=f)
+        print(f'TRAIN LOSS: {train_loss:.4f} TRAIN ACC: {train_acc:.4f}')
 
         # run validation data
         cnn.eval()
@@ -113,8 +113,11 @@ def train_model(args):
     print('train_loss_history, train_acc_history, valid_loss_history, valid_acc_history', file=f)
     print(f'{train_loss_history}\n {train_acc_history}\n {valid_loss_history}\n {valid_acc_history}\n', file=f)
 
-    print(f'Time: {time.time() - start}', file=f)
-    print(f'Time: {time.time() - start}')
+    total_time = time.time() - start
+    mins = int(total_time / 60)
+    secs = int(total_time % 60)
+    print(f'Total Run Time: {mins} min {secs} seconds', file=f)
+    print(f'Total Run Time: {mins} min {secs} seconds')
 
     f.close()
 
@@ -122,6 +125,8 @@ def train_model(args):
 
 
 if __name__ == '__main__':
+
+    print()
 
     parser = argparse.ArgumentParser(description='python train.py -epochs 100 -optimizer ADADELTA -batchsize 100 -print_freq 10')
     parser.add_argument('-lr', type=float, default=0.001, help='initial learning rate [default: 0.001]')
