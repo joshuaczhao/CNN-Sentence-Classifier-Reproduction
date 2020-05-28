@@ -31,7 +31,8 @@ cnn = model.Net(BATCH_SIZE=BATCH, M_TYPE=MODEL_TYPE, E_DIMS=300, M_SENT_LEN=max_
 
 criterion = nn.CrossEntropyLoss()
 # optimizer = torch.optim.SGD(cnn.parameters(), lr=0.001, momentum=0.9)
-optimizer = torch.optim.Adam(cnn.parameters(), lr=0.001)
+optimizer = torch.optim.Adadelta(cnn.parameters(), lr=0.001, weight_decay=0.01)
+# optimizer = torch.optim.Adam(cnn.parameters(), lr=0.001, weight_decay=0.01)
 
 name = 'outputs/' + datetime.datetime.now().strftime("%m-%d-%Y_%H_%M") + '.txt'
 f = open(name, "a")
