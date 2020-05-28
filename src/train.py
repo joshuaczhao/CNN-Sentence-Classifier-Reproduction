@@ -20,7 +20,7 @@ def train_model(args):
     MODEL_TYPE = args.static
 
     name = 'outputs/' + datetime.datetime.now().strftime("%m-%d-%Y_%H%M") + f'_{OPTIMIZER}_{N_EPOCHS}' + '.txt'
-    print(name)
+    print(f'Saving Outputs to: {name}')
     f = open(name, "a")
 
     print(f'BATCH={BATCH}; DROPOUT_RATE={DROPOUT_RATE}; N_EPOCHS={N_EPOCHS}; OPTIMIZER={OPTIMIZER}; MODEL_TYPE={MODEL_TYPE}; \n')
