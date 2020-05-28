@@ -18,6 +18,7 @@ def train_model(args):
     N_EPOCHS = args.epochs
     OPTIMIZER = args.optimizer
     MODEL_TYPE = args.static
+    PRINT_FREQ = args.print_freq
 
     name = 'outputs/' + datetime.datetime.now().strftime("%m-%d-%Y_%H%M") + f'_{OPTIMIZER}_{N_EPOCHS}' + '.txt'
     print(f'Saving Outputs to: {name}')
@@ -81,18 +82,14 @@ def train_model(args):
 
             # print mini-batch statistics
             minibatch_loss = loss.item()
-            running_loss += minibatch_loss
             one_epoch_loss_history.append(minibatch_loss)
-            print_frequency = 1
-            if i % print_frequency == print_frequency - 1:    # print every mini-batch
-                # print('[%d, %3d] train loss: %.4f train acc: %.4f' % (epoch + 1, i + 1, running_loss / print_frequency, acc), file=f)
-                print('[%d, %3d] train loss: %.4f train acc: %.4f' % (epoch + 1, i + 1, running_loss / print_frequency, acc))
-                running_loss = 0.0
+            if i % PRINT_FREQ == PRINT_FREQ - 1:    # print every PRINT_FREQ mini-batches
+                print('[%d, %3d] train loss: %.4f train acc: %.4f' % (epoch + 1, i + 1, minibatch_loss, acc))
 
         train_loss = np.mean(one_epoch_loss_history)
         train_acc = np.mean(one_epoch_acc_history)
-        print(f'EPOCH AVG TRAIN ACC: {train_acc:.4f}', file=f)
-        print(f'EPOCH AVG TRAIN ACC: {train_acc:.4f}')
+        print(f'TRAIN ACC: {train_acc:.4f}', file=f)
+        print(f'TRAIN ACC: {train_acc:.4f}')
 
         # run validation data
         cnn.eval()
@@ -114,7 +111,7 @@ def train_model(args):
     print('Finished Training')
 
     print('train_loss_history, train_acc_history, valid_loss_history, valid_acc_history', file=f)
-    print([train_loss_history, train_acc_history, valid_loss_history, valid_acc_history], file=f)
+    print(f'{train_loss_history}\n {train_acc_history}\n {valid_loss_history}\n {valid_acc_history}\n', file=f)
 
     print(f'Time: {time.time() - start}', file=f)
     print(f'Time: {time.time() - start}')
@@ -126,13 +123,14 @@ def train_model(args):
 
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser(description='CNN text classificer')
+    parser = argparse.ArgumentParser(description='python train.py -epochs 100 -optimizer ADADELTA -batchsize 100 -print_freq 10')
     parser.add_argument('-lr', type=float, default=0.001, help='initial learning rate [default: 0.001]')
     parser.add_argument('-epochs', type=int, default=20, help='number of epochs for train [default: 256]')
     parser.add_argument('-batchsize', type=int, default=50, help='batch size for training [default: 64]')
     parser.add_argument('-optimizer', type=str, default='ADADELTA', help='optimizer [default: ADADELTA]')
     parser.add_argument('-dropout', type=float, default=0.5, help='the probability for dropout [default: 0.5]')
     parser.add_argument('-static', action='store_true', default='NOT STATIC', help='fix the embedding')
+    parser.add_argument('-print_freq', type=int, default=1, help='number of mini-batches to print after')
 
     args = parser.parse_args()
     cnn = train_model(args)
