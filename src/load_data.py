@@ -18,11 +18,8 @@ def load_MR_data():
     print("Embeddings model loaded. vocabulary size = ", len(model.vocab), 'vocab shape = ', model.vectors.shape)
 
     # Pad lines, Sub out-of-vocab words, Get model indices
+    data = pad(data)
     for i, sentence in enumerate(data):
-        # pad
-        if len(sentence) < max_sen_len:
-            diff = max_sen_len - len(sentence)
-            sentence.extend(['<pad>' for x in range(diff)])
 
         # sub unknown tokens
         for j, token in enumerate(sentence):
@@ -42,5 +39,11 @@ def load_MR_data():
 
     return data, labels, max_sen_len
 
-
-
+def pad(data, max_sen_len):
+    for i in range(len(data)):
+        sentence = data[i]
+        if len(sentence) < max_sen_len:
+            diff = max_sen_len - len(sentence)
+            sentence.extend(['<pad>' for x in range(diff)])
+        data[i] = sentence
+    return data
