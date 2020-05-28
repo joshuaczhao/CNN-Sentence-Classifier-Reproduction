@@ -55,6 +55,7 @@ def train_model(args):
     valid_loss_history = []
     valid_acc_history = []
     for epoch in range(N_EPOCHS):  # loop over the dataset multiple times
+        epoch_start = time.time()
         print(f'===== EPOCH {epoch + 1}/{N_EPOCHS} =====', file=f)
         print(f'===== EPOCH {epoch + 1}/{N_EPOCHS} =====')
         one_epoch_acc_history = []
@@ -106,6 +107,7 @@ def train_model(args):
         train_acc_history.append(train_acc)
         valid_loss_history.append(valid_loss)
         valid_acc_history.append(valid_acc)
+        print(f'EPOCH TIME: {(time.time() - epoch_start):.2f}s')
 
     print('Finished Training', file=f)
     print('Finished Training')
@@ -117,7 +119,7 @@ def train_model(args):
     mins = int(total_time / 60)
     secs = int(total_time % 60)
     print(f'Total Run Time: {mins} min {secs} seconds', file=f)
-    print(f'Total Run Time: {mins} min {secs} seconds')
+    print(f'Total Run Time: {mins} min {secs} s')
 
     f.close()
 
