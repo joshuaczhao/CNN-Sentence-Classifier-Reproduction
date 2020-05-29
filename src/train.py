@@ -15,6 +15,7 @@ def train_model(args):
 
     BATCH = args.batchsize
     DROPOUT_RATE = args.dropout
+    LR = args.lr
     N_EPOCHS = args.epochs
     OPTIMIZER = args.optimizer
     MODEL_TYPE = args.static
@@ -43,11 +44,12 @@ def train_model(args):
 
     criterion = nn.CrossEntropyLoss()
     if OPTIMIZER == 'SGD':
-        optimizer = torch.optim.SGD(cnn.parameters(), lr=0.001, momentum=0.9)
+        optimizer = torch.optim.SGD(cnn.parameters(), lr=LR, momentum=0.9)
     elif OPTIMIZER == 'ADADELTA':
-        optimizer = torch.optim.Adadelta(cnn.parameters(), lr=0.001, weight_decay=0.01)
+        print('Using ADADELTA optimizer')
+        optimizer = torch.optim.Adadelta(cnn.parameters(), lr=LR, weight_decay=0.01)
     else:
-        optimizer = torch.optim.Adam(cnn.parameters(), lr=0.001, weight_decay=0.01)
+        optimizer = torch.optim.Adam(cnn.parameters(), lr=LR, weight_decay=0.01)
 
 
     train_loss_history = []
@@ -132,12 +134,12 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='python train.py -epochs 100 -optimizer ADADELTA -batchsize 100 -print_freq 10')
     parser.add_argument('-lr', type=float, default=0.001, help='initial learning rate [default: 0.001]')
-    parser.add_argument('-epochs', type=int, default=20, help='number of epochs for train [default: 256]')
-    parser.add_argument('-batchsize', type=int, default=50, help='batch size for training [default: 64]')
+    parser.add_argument('-epochs', type=int, default=100, help='number of epochs for train [default: 100]')
+    parser.add_argument('-batchsize', type=int, default=50, help='batch size for training [default: 50]')
     parser.add_argument('-optimizer', type=str, default='ADADELTA', help='optimizer [default: ADADELTA]')
     parser.add_argument('-dropout', type=float, default=0.5, help='the probability for dropout [default: 0.5]')
     parser.add_argument('-static', action='store_true', default='NOT STATIC', help='fix the embedding')
-    parser.add_argument('-print_freq', type=int, default=1, help='number of mini-batches to print after')
+    parser.add_argument('-print_freq', type=int, default=10, help='number of mini-batches to print after [default: 10]')
 
     args = parser.parse_args()
     cnn = train_model(args)
