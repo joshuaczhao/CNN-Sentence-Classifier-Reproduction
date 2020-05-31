@@ -51,7 +51,7 @@ def train_model(args):
     else:
         optimizer = torch.optim.Adam(cnn.parameters(), lr=LR, weight_decay=0.01)
 
-
+    
     train_loss_history = []
     train_acc_history = []
     valid_loss_history = []
@@ -71,7 +71,7 @@ def train_model(args):
 
             # zero the parameter gradients
             optimizer.zero_grad()
-
+        
             # forward + backward + optimize
             outputs = cnn(inputs)
             loss = criterion(outputs, labels)
