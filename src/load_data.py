@@ -40,7 +40,6 @@ def get_indices(data):
     # Load embedding model
     goog_w2v_path = 'data/embedding_models/GoogleNews-vectors-negative300.bin'
     model = KeyedVectors.load_word2vec_format(goog_w2v_path, binary=True)
-    print("Embeddings model loaded. vocabulary size = ", len(model.vocab), 'vocab shape = ', model.vectors.shape)
 
     for i, sentence in enumerate(data):
         for j, token in enumerate(sentence):
