@@ -25,8 +25,8 @@ def train_model(args):
     print(f'Saving Outputs to: {name}')
     f = open(name, "a")
 
-    print(f'BATCH={BATCH}; DROPOUT_RATE={DROPOUT_RATE}; N_EPOCHS={N_EPOCHS}; OPTIMIZER={OPTIMIZER}; MODEL_TYPE={MODEL_TYPE}; \n')
-    print(f'BATCH={BATCH}; DROPOUT_RATE={DROPOUT_RATE}; N_EPOCHS={N_EPOCHS}; OPTIMIZER={OPTIMIZER}; MODEL_TYPE={MODEL_TYPE}; \n', file=f)
+    print(f'BATCH={BATCH}; LR={LR}; DROPOUT={DROPOUT_RATE}; N_EPOCHS={N_EPOCHS}; OPT={OPTIMIZER}; MODEL={MODEL_TYPE}; \n')
+    print(f'BATCH={BATCH}; LR={LR}; DROPOUT={DROPOUT_RATE}; N_EPOCHS={N_EPOCHS}; OPT={OPTIMIZER}; MODEL={MODEL_TYPE}; \n', file=f)
 
     data, labels, max_sen_len = load_data.load_MR_data()
 
