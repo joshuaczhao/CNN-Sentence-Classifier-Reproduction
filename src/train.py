@@ -140,7 +140,7 @@ if __name__ == '__main__':
     parser.add_argument('-batchsize', type=int, default=50, help='batch size for training [default: 50]')
     parser.add_argument('-optimizer', type=str, default='ADADELTA', help='optimizer [default: ADADELTA]')
     parser.add_argument('-dropout', type=float, default=0.5, help='the probability for dropout [default: 0.5]')
-    parser.add_argument('-static', action='store_true', default='NOT STATIC', help='fix the embedding')
+    parser.add_argument('-static', type=str, default='NOT STATIC', help='fix the embedding')
     parser.add_argument('-print_freq', type=int, default=10, help='number of mini-batches to print after [default: 10]')
 
     args = parser.parse_args()
