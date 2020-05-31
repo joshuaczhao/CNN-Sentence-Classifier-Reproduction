@@ -38,7 +38,7 @@ def train_model(args):
     y_test_tensor = torch.LongTensor(y_test)
 
     train_dataset = torch.utils.data.TensorDataset(x_train_tensor, y_train_tensor)
-    trainloader = torch.utils.data.DataLoader(train_dataset, batch_size=BATCH, shuffle=True)
+    # trainloader = torch.utils.data.DataLoader(train_dataset, batch_size=BATCH, shuffle=True)
 
     cnn = model.Net(BATCH_SIZE=BATCH, M_TYPE=MODEL_TYPE, E_DIMS=300, M_SENT_LEN=max_sen_len, DROP=DROPOUT_RATE)
 
@@ -64,7 +64,8 @@ def train_model(args):
         one_epoch_loss_history = []
 
         cnn.train()
-        running_loss = 0.0
+        trainloader = torch.utils.data.DataLoader(train_dataset, batch_size=BATCH, shuffle=True)
+
         for i, data in enumerate(trainloader, 0):
             # get the inputs; data is a list of [inputs, labels]
             inputs, labels = data
@@ -95,9 +96,10 @@ def train_model(args):
         print(f'TRAIN LOSS: {train_loss:.4f} TRAIN ACC: {train_acc:.4f}')
 
         # run validation data
-        cnn.eval()
-        outputs = cnn(x_test_tensor)
-        valid_loss = criterion(outputs, y_test_tensor).item()
+        with torch.no_grad():
+            cnn.eval()
+            outputs = cnn(x_test_tensor)
+            valid_loss = criterion(outputs, y_test_tensor).item()
         valid_predictions = torch.argmax(outputs, dim=1).detach()
         valid_n_correct = (valid_predictions == y_test_tensor).sum().item()
         valid_acc = valid_n_correct / len(y_test_tensor)
