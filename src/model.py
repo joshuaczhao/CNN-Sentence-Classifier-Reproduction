@@ -26,7 +26,7 @@ class Net(nn.Module):
         weights = torch.FloatTensor(embedding_model.vectors)
 
         if M_TYPE == 'RANDOM':
-            vocabulary_size = 3e6
+            vocabulary_size = int(3e6)
             self.embedding = nn.Embedding(num_embeddings=vocabulary_size, embedding_dim=E_DIMS)
         elif M_TYPE == 'NOT_STATIC':
             self.embedding = nn.Embedding.from_pretrained(weights)
