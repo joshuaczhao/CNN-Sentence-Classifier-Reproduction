@@ -5,7 +5,7 @@ import torch.nn.functional as F
 from gensim.models import KeyedVectors
 
 class Net(nn.Module):
-    def __init__(self, BATCH_SIZE, M_TYPE='STATIC', N_KERN=100, E_DIMS=300, E_NUMB=662109, DROP=0, C_SIZE=2, TRAIN=True, M_SENT_LEN=40):
+    def __init__(self, BATCH_SIZE, M_TYPE='NOT STATIC', N_KERN=100, E_DIMS=300, E_NUMB=662109, DROP=0, C_SIZE=2, TRAIN=True, M_SENT_LEN=40):
         super(Net, self).__init__()
 
         # Defaults for Google Word2Vec
@@ -21,17 +21,21 @@ class Net(nn.Module):
         self.TRAIN  = TRAIN
         self.M_S_L  = M_SENT_LEN
 
-
-        # Don't download if just testing the model, embeddings take up lots of space
         path = 'data/embedding_models/GoogleNews-vectors-negative300.bin'
-        # path = 'data/embedding_models/glove.twitter.27B/converted_25d.txt'
         embedding_model = KeyedVectors.load_word2vec_format(path, binary=True)
         weights = torch.FloatTensor(embedding_model.vectors)
 
-        self.embedding = nn.Embedding.from_pretrained(weights)
-        
-        if M_TYPE == 'STATIC':
+        if M_TYPE == 'RANDOM':
+            vocabulary_size = 3e6
+            self.embedding = nn.Embedding(num_embeddings=vocabulary_size, embedding_dim=E_DIMS)
+        elif M_TYPE == 'NOT STATIC':
+            self.embedding = nn.Embedding.from_pretrained(weights)
+        elif M_TYPE == 'STATIC':
+            self.embedding = nn.Embedding.from_pretrained(weights)
             self.embedding.weight.requires_grad = False  
+        else:
+            print('Invalid M_TYPE')
+            return
 
         '''
         # For testing
