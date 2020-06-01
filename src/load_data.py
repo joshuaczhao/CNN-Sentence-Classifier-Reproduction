@@ -21,8 +21,9 @@ def load_MR_data():
 
 
 def load_subj_data(max_length=40):
-    # quote = subjective (0)
-    # plot = objective (1)
+    '''
+        Label Convention: subjective/quote = 0, objective/plot = 1
+    '''
 
     path1 = 'data/Subj/plot.tok.gt9.5000'
     path2 = 'data/Subj/quote.tok.gt9.5000'
@@ -32,13 +33,12 @@ def load_subj_data(max_length=40):
     subjective_examples = list(open(path2, "r", encoding="ISO-8859-1").readlines())
     # Split by words
     data = [clean_str(s.strip()) for s in objective_examples + subjective_examples]
-    # Generate labels
     labels = [1 for _ in objective_examples] + [0 for _ in subjective_examples]
 
     data, max_sen_len = tokenize(data)
     data = [s[:40] for s in data]
-    # data = pad(data, max_sen_len)
-    # data = get_indices(data)
+    data = pad(data, max_sen_len)
+    data = get_indices(data)
 
     return data, labels, max_sen_len
 
