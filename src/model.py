@@ -5,7 +5,7 @@ import torch.nn.functional as F
 from gensim.models import KeyedVectors
 
 class Net(nn.Module):
-    def __init__(self, BATCH_SIZE, M_TYPE='NOT STATIC', N_KERN=100, E_DIMS=300, E_NUMB=662109, DROP=0, C_SIZE=2, TRAIN=True, M_SENT_LEN=40):
+    def __init__(self, BATCH_SIZE, M_TYPE='NOT_STATIC', N_KERN=100, E_DIMS=300, E_NUMB=662109, DROP=0, C_SIZE=2, TRAIN=True, M_SENT_LEN=40):
         super(Net, self).__init__()
 
         # Defaults for Google Word2Vec
@@ -28,7 +28,7 @@ class Net(nn.Module):
         if M_TYPE == 'RANDOM':
             vocabulary_size = 3e6
             self.embedding = nn.Embedding(num_embeddings=vocabulary_size, embedding_dim=E_DIMS)
-        elif M_TYPE == 'NOT STATIC':
+        elif M_TYPE == 'NOT_STATIC':
             self.embedding = nn.Embedding.from_pretrained(weights)
         elif M_TYPE == 'STATIC':
             self.embedding = nn.Embedding.from_pretrained(weights)

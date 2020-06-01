@@ -22,7 +22,7 @@ def train_model(args):
     MODEL_TYPE = args.model
     PRINT_FREQ = args.print_freq
 
-    if MODEL_TYPE not in ['RANDOM', 'STATIC', 'NOT STATIC', 'MULTICHANNEL']:
+    if MODEL_TYPE not in ['RANDOM', 'STATIC', 'NOT_STATIC', 'MULTICHANNEL']:
         print('Invalid model type')
         return
 
@@ -145,13 +145,13 @@ if __name__ == '__main__':
 
     print()
 
-    parser = argparse.ArgumentParser(description='python train.py -dataset MR -epochs 100 -optimizer ADADELTA -batchsize 100 -print_freq 10')
+    parser = argparse.ArgumentParser(description='python train.py -dataset MR -lr 0.1 -epochs 50 -optimizer ADADELTA -batchsize 50 -dropout 0.5 -model NOT_STATIC -print_freq 10')
     parser.add_argument('-lr', type=float, default=0.001, help='initial learning rate [default: 0.001]')
-    parser.add_argument('-epochs', type=int, default=100, help='number of epochs for train [default: 100]')
+    parser.add_argument('-epochs', type=int, default=50, help='number of epochs for train [default: 100]')
     parser.add_argument('-batchsize', type=int, default=50, help='batch size for training [default: 50]')
     parser.add_argument('-optimizer', type=str, default='ADADELTA', help='optimizer [default: ADADELTA]')
     parser.add_argument('-dropout', type=float, default=0.5, help='the probability for dropout [default: 0.5]')
-    parser.add_argument('-model', type=str, default='NOT STATIC', help='model type from [RANDOM, STATIC, NOT STATIC, MULTICHANNEL]')
+    parser.add_argument('-model', type=str, default='NOT_STATIC', help='model type from [RANDOM, STATIC, NOT_STATIC, MULTICHANNEL]')
     parser.add_argument('-print_freq', type=int, default=10, help='number of mini-batches to print after [default: 10]')
     parser.add_argument('-dataset', type=str, default='MR', help='dataset from [MR, TREC, SUBJ]')
 
