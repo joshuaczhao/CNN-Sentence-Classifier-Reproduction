@@ -5,6 +5,7 @@ import time
 import datetime
 from sklearn.model_selection import train_test_split
 import argparse
+import os
 
 import load_data
 import model
@@ -30,12 +31,16 @@ def train_model(args):
         print('Invalid optimizer input')
         return
 
+    output_dir = f'outputs/{DATASET}/{MODEL_TYPE}'
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
     name = f'outputs/{DATASET}/{MODEL_TYPE}/{datetime.datetime.now().strftime("%m-%d-%Y_%H%M")}_{OPTIMIZER}_{LR}.txt'
     print(f'Saving Outputs to: {name}')
     f = open(name, "a")
 
-    print(f'BATCH={BATCH}; LR={LR}; DROPOUT={DROPOUT_RATE}; N_EPOCHS={N_EPOCHS}; OPT={OPTIMIZER}; MODEL={MODEL_TYPE}; \n')
-    print(f'BATCH={BATCH}; LR={LR}; DROPOUT={DROPOUT_RATE}; N_EPOCHS={N_EPOCHS}; OPT={OPTIMIZER}; MODEL={MODEL_TYPE}; \n', file=f)
+    print(f'DATASET={DATASET}; BATCH={BATCH}; LR={LR}; DROPOUT={DROPOUT_RATE}; N_EPOCHS={N_EPOCHS}; OPT={OPTIMIZER}; MODEL={MODEL_TYPE}; \n')
+    print(f'DATASET={DATASET}; BATCH={BATCH}; LR={LR}; DROPOUT={DROPOUT_RATE}; N_EPOCHS={N_EPOCHS}; OPT={OPTIMIZER}; MODEL={MODEL_TYPE}; \n', file=f)
 
     if DATASET == 'MR':
         data, labels, max_sen_len = load_data.load_MR_data()
