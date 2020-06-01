@@ -26,7 +26,7 @@ def train_model(args):
         print('Invalid model type')
         return
 
-    name = 'outputs/' + datetime.datetime.now().strftime("%m-%d-%Y_%H%M") + f'_{OPTIMIZER}_{N_EPOCHS}' + '.txt'
+    name = f'outputs/{DATASET}/' + datetime.datetime.now().strftime("%m-%d-%Y_%H%M") + f'_{OPTIMIZER}_{N_EPOCHS}' + '.txt'
     print(f'Saving Outputs to: {name}')
     f = open(name, "a")
 
