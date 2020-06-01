@@ -26,7 +26,11 @@ def train_model(args):
         print('Invalid model type')
         return
 
-    name = f'outputs/{DATASET}/' + datetime.datetime.now().strftime("%m-%d-%Y_%H%M") + f'_{OPTIMIZER}_{N_EPOCHS}' + '.txt'
+    if OPTIMIZER not in ['SGD', 'ADADELTA', 'ADAM']:
+        print('Invalid optimizer input')
+        return
+
+    name = f'outputs/{DATASET}/{MODEL_TYPE}/{datetime.datetime.now().strftime("%m-%d-%Y_%H%M")}_{OPTIMIZER}_{LR}.txt'
     print(f'Saving Outputs to: {name}')
     f = open(name, "a")
 
@@ -59,8 +63,11 @@ def train_model(args):
     elif OPTIMIZER == 'ADADELTA':
         print('Using ADADELTA optimizer')
         optimizer = torch.optim.Adadelta(cnn.parameters(), lr=LR, weight_decay=0.01)
-    else:
+    elif OPTIMIZER == 'ADAM':
         optimizer = torch.optim.Adam(cnn.parameters(), lr=LR, weight_decay=0.01)
+    else:
+        print('No optimizer specified')
+        return
 
     
     train_loss_history = []
@@ -145,14 +152,14 @@ if __name__ == '__main__':
 
     print()
 
-    parser = argparse.ArgumentParser(description='python train.py -dataset MR -lr 0.1 -epochs 50 -optimizer ADADELTA -batchsize 50 -dropout 0.5 -model NOT_STATIC -print_freq 10')
-    parser.add_argument('-lr', type=float, default=0.001, help='initial learning rate [default: 0.001]')
-    parser.add_argument('-epochs', type=int, default=50, help='number of epochs for train [default: 100]')
+    parser = argparse.ArgumentParser(description='python train.py -dataset MR -lr 0.1 -epochs 50 -optimizer ADADELTA -batchsize 50 -dropout 0.5 -model NOT_STATIC -print_freq 20')
+    parser.add_argument('-lr', type=float, default=0.1, help='initial learning rate [default: 0.1]')
+    parser.add_argument('-epochs', type=int, default=50, help='number of epochs for train [default: 50]')
     parser.add_argument('-batchsize', type=int, default=50, help='batch size for training [default: 50]')
     parser.add_argument('-optimizer', type=str, default='ADADELTA', help='optimizer [default: ADADELTA]')
     parser.add_argument('-dropout', type=float, default=0.5, help='the probability for dropout [default: 0.5]')
     parser.add_argument('-model', type=str, default='NOT_STATIC', help='model type from [RANDOM, STATIC, NOT_STATIC, MULTICHANNEL]')
-    parser.add_argument('-print_freq', type=int, default=10, help='number of mini-batches to print after [default: 10]')
+    parser.add_argument('-print_freq', type=int, default=20, help='number of mini-batches to print after [default: 20]')
     parser.add_argument('-dataset', type=str, default='MR', help='dataset from [MR, TREC, SUBJ]')
 
     args = parser.parse_args()
