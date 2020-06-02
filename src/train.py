@@ -36,7 +36,7 @@ def train_model(args):
         os.makedirs(output_dir)
 
     name = f'outputs/{DATASET}/{MODEL_TYPE}/{datetime.datetime.now().strftime("%m-%d-%Y_%H%M")}_{OPTIMIZER}_{LR}.txt'
-    print(f'Saving Outputs to: {name}')
+    print(f'Saving Outputs to: {name}\n')
     f = open(name, "a")
 
     print(f'DATASET={DATASET}; BATCH={BATCH}; LR={LR}; DROPOUT={DROPOUT_RATE}; N_EPOCHS={N_EPOCHS}; OPT={OPTIMIZER}; MODEL={MODEL_TYPE}; \n')
@@ -70,7 +70,6 @@ def train_model(args):
     if OPTIMIZER == 'SGD':
         optimizer = torch.optim.SGD(cnn.parameters(), lr=LR, momentum=0.9)
     elif OPTIMIZER == 'ADADELTA':
-        print('Using ADADELTA optimizer')
         optimizer = torch.optim.Adadelta(cnn.parameters(), lr=LR, weight_decay=0.01)
     elif OPTIMIZER == 'ADAM':
         optimizer = torch.optim.Adam(cnn.parameters(), lr=LR, weight_decay=0.01)

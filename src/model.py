@@ -8,8 +8,6 @@ class Net(nn.Module):
     def __init__(self, BATCH_SIZE, M_TYPE='NOT_STATIC', N_KERN=100, E_DIMS=300, E_NUMB=662109, DROP=0, C_SIZE=2, TRAIN=True, M_SENT_LEN=40):
         super(Net, self).__init__()
 
-        # Defaults for Google Word2Vec
-
         # Need to update the way arguments are passed into this, C_SIZE, M_SENT_LEN are incorrect values
         self.BATCH_SIZE = BATCH_SIZE
         self.M_TYPE = M_TYPE

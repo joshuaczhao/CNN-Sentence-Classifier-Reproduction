@@ -69,12 +69,13 @@ def load_TREC_data(set):
                         break
                     remove += i
                 # Remove the label from the front of the string
-                data.append(line.replace(remove + " ", ""))
+                data.append(line.replace(remove + " ", "")[:-1])
 
-    data, max_sen_len = tokenize(data)
-    data = pad(data, max_sen_len)
-    data = get_indices(data)
-
+    data = [clean_str(s.strip()) for s in data]
+    # data, max_sen_len = tokenize(data)
+    # data = pad(data, max_sen_len)
+    # data = get_indices(data)
+    max_sen_len = 5
     if set == "train":
         return data, labels, max_sen_len
     else:
@@ -153,3 +154,9 @@ def load_data_and_labels(positive_data_file, negative_data_file):
     negative_labels = [0 for _ in negative_examples]
     y = np.concatenate([positive_labels, negative_labels], 0)
     return [x_text, y]
+
+
+data, labels, max_sen_len = load_TREC_data(set='train')
+print(np.shape(data), np.shape(labels))
+print(data[0:5])
+print(labels[0:5])
