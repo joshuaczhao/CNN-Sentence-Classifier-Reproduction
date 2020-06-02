@@ -47,8 +47,7 @@ def train_model(args):
     elif DATASET == 'SUBJ':
         data, labels, max_sen_len, n_classes = load_data.load_subj_data(max_length=40)
     elif DATASET == 'TREC':
-        x_train, y_train, max_sen_len, n_classes = load_data.load_TREC_data("train")
-        x_test, y_test = load_data.load_TREC_data("test")
+        x_train, y_train, x_test, y_test, max_sen_len, n_classes = load_data.load_TREC_data()
     else:
         print('Invalid DATASET input')
         return

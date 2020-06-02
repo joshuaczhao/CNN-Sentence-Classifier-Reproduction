@@ -46,45 +46,68 @@ def load_subj_data(max_length=40):
 
     return data, labels, max_sen_len, n_classes
 
-def load_TREC_data(set):
+def load_TREC_data():
     '''
     Label Convention: Description = 0, Entity = 1, Abbreviation = 2, Human = 3, Number = 4, Location = 5"
     '''
 
-    if set == "train":
-        path = "data/TREC/TrainTREC.txt"
-    else:
-        path = "data/TREC/TestTREC.txt"
-
+    ### load TRAIN FILE ###
+    path = "data/TREC/TrainTREC.txt"
 
     line_list = list(open(path, "r").readlines())
     label_ids = {"DESC:": 0, "ENTY:": 1, "ABBR:": 2, "HUM:": 3, "NUM:": 4, "LOC:": 5}
-    data = []
-    labels = []
+    train_data = []
+    train_labels = []
 
     for line in line_list:
         for label in label_ids:
             if label in line:
                 # Append label number to labels
-                labels.append(label_ids[label])
+                train_labels.append(label_ids[label])
                 remove = ""
                 for i in line:
                     if i == " ":
                         break
                     remove += i
                 # Remove the label from the front of the string
-                data.append(line.replace(remove + " ", "")[:-1])
+                train_data.append(line.replace(remove + " ", "")[:-1])
 
-    data = [clean_str(s.strip()) for s in data]
-    data, max_sen_len = tokenize(data)
-    data = pad(data, max_sen_len)
-    data = get_indices(data)
+    ### load TEST FILE ###
+    path = "data/TREC/TestTREC.txt"
 
-    n_classes = len(np.unique(labels))
-    if set == "train":
-        return data, labels, max_sen_len, n_classes
-    else:
-        return data, labels
+    line_list = list(open(path, "r").readlines())
+    label_ids = {"DESC:": 0, "ENTY:": 1, "ABBR:": 2, "HUM:": 3, "NUM:": 4, "LOC:": 5}
+    test_data = []
+    test_labels = []
+
+    for line in line_list:
+        for label in label_ids:
+            if label in line:
+                # Append label number to labels
+                test_labels.append(label_ids[label])
+                remove = ""
+                for i in line:
+                    if i == " ":
+                        break
+                    remove += i
+                # Remove the label from the front of the string
+                test_data.append(line.replace(remove + " ", "")[:-1])
+
+    train_data = [clean_str(s.strip()) for s in train_data]
+    test_data = [clean_str(s.strip()) for s in test_data]
+    train_data, train_max_sen_len = tokenize(train_data)
+    test_data, test_max_sen_len = tokenize(test_data)
+
+    max_sen_len = max(train_max_sen_len, test_max_sen_len)
+
+    train_data = pad(train_data, max_sen_len)
+    test_data = pad(test_data, max_sen_len)
+    train_data = get_indices(train_data)
+    test_data = get_indices(test_data)
+
+    n_classes = len(np.unique(train_labels))
+
+    return train_data, train_labels, test_data, test_labels, max_sen_len, n_classes
 
 
 def tokenize(data):
