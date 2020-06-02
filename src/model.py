@@ -22,6 +22,8 @@ class Net(nn.Module):
         path = 'data/embedding_models/GoogleNews-vectors-negative300.bin'
         embedding_model = KeyedVectors.load_word2vec_format(path, binary=True)
         weights = torch.FloatTensor(embedding_model.vectors)
+        
+        self.NUM_INPUT_C = 1
 
         if M_TYPE == 'RANDOM':
             vocabulary_size = int(3e6)
@@ -31,6 +33,11 @@ class Net(nn.Module):
         elif M_TYPE == 'STATIC':
             self.embedding = nn.Embedding.from_pretrained(weights)
             self.embedding.weight.requires_grad = False  
+        elif M_TYPE == 'MULTI':
+            self.embedding = nn.Embedding.from_pretrained(weights)
+            self.embedding_static = nn.Embedding.from_pretrained(weights)
+            self.embedding_static.weight.requires_grad = False
+            self.NUM_INPUT_C = 2
         else:
             print('Invalid M_TYPE')
             return
@@ -40,9 +47,9 @@ class Net(nn.Module):
         self.embedding = nn.Embedding(E_DIMS, E_NUMB)
         '''
         # nn.Conv2d(n_inp, n_outp, kern_size, stride)
-        self.conv1 = nn.Conv2d(1, N_KERN, (3, E_DIMS), 1)
-        self.conv2 = nn.Conv2d(1, N_KERN, (4, E_DIMS), 1)
-        self.conv3 = nn.Conv2d(1, N_KERN, (5, E_DIMS), 1)
+        self.conv1 = nn.Conv2d(self.NUM_INPUT_C, N_KERN, (3, E_DIMS), 1)
+        self.conv2 = nn.Conv2d(self.NUM_INPUT_C, N_KERN, (4, E_DIMS), 1)
+        self.conv3 = nn.Conv2d(self.NUM_INPUT_C, N_KERN, (5, E_DIMS), 1)
         self.dropout = nn.Dropout(DROP)
         self.fc1   = nn.Linear(3*N_KERN, C_SIZE)       
         
@@ -50,6 +57,11 @@ class Net(nn.Module):
 
         x = self.embedding(x)
         x = x.view((-1, 1, self.M_S_L, self.E_DIMS))
+        
+        if M_TYPE == 'MULTI':
+            x_s = self.embedding_static(x)
+            x_s = x_s.view((-1, 1, self.M_S_L, self.E_DIMS))
+            x = torch.cat((x_s, x), dim=1) # Concatenate along "Cin" dimension
 
         '''
         if self.TYPE == 'STATIC':
