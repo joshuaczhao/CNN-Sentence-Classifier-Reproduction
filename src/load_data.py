@@ -42,6 +42,44 @@ def load_subj_data(max_length=40):
 
     return data, labels, max_sen_len
 
+def load_TREC_data(set):
+    '''
+    Label Convention: Description = 0, Entity = 1, Abbreviation = 2, Human = 3, Number = 4, Location = 5"
+    '''
+
+    if set == "train":
+        path = "data/TREC/TrainTREC.txt"
+    else:
+        path = "data/TREC/TestTREC.txt"
+
+
+    line_list = list(open(path, "r").readlines())
+    label_ids = {"DESC:": 0, "ENTY:": 1, "ABBR:": 2, "HUM:": 3, "NUM:": 4, "LOC:": 5}
+    data = []
+    labels = []
+
+    for line in line_list:
+        for label in label_ids:
+            if label in line:
+                # Append label number to labels
+                labels.append(label_ids[label])
+                remove = ""
+                for i in line:
+                    if i == " ":
+                        break
+                    remove += i
+                # Remove the label from the front of the string
+                data.append(line.replace(remove + " ", ""))
+
+    data, max_sen_len = tokenize(data)
+    data = pad(data, max_sen_len)
+    data = get_indices(data)
+
+    if set == "train":
+        return data, labels, max_sen_len
+    else:
+        return data, labels
+
 
 def tokenize(data):
     data = [sentence.split(' ') for sentence in data]
@@ -115,5 +153,3 @@ def load_data_and_labels(positive_data_file, negative_data_file):
     negative_labels = [0 for _ in negative_examples]
     y = np.concatenate([positive_labels, negative_labels], 0)
     return [x_text, y]
-
-

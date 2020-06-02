@@ -46,11 +46,15 @@ def train_model(args):
         data, labels, max_sen_len = load_data.load_MR_data()
     elif DATASET == 'SUBJ':
         data, labels, max_sen_len = load_data.load_subj_data(max_length=40)
+    elif DATASET == 'TREC':
+        x_train, y_train, max_sen_len = load_data.load_TREC_data("train")
+        x_test, y_test = load_data.load_TREC_data("test")
     else:
         print('Invalid DATASET input')
         return
 
-    x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.1, shuffle=True, stratify=labels)
+    if DATASET == 'MR' or DATASET == 'SUBJ':
+        x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.1, shuffle=True, stratify=labels)
 
     x_train_tensor = torch.LongTensor(x_train)
     y_train_tensor = torch.LongTensor(y_train)
