@@ -14,13 +14,13 @@ def train_model(args):
 
     start = time.time()
 
-    DATASET = args.dataset
+    DATASET = args.dataset.upper()
     BATCH = args.batchsize
     DROPOUT_RATE = args.dropout
     LR = args.lr
     N_EPOCHS = args.epochs
-    OPTIMIZER = args.optimizer
-    MODEL_TYPE = args.model
+    OPTIMIZER = args.optimizer.upper()
+    MODEL_TYPE = args.model.upper()
     PRINT_FREQ = args.print_freq
 
     if MODEL_TYPE not in ['RANDOM', 'STATIC', 'NOT_STATIC', 'MULTICHANNEL']:
@@ -157,14 +157,14 @@ if __name__ == '__main__':
 
     print()
 
-    parser = argparse.ArgumentParser(description='python train.py -dataset MR -lr 0.1 -epochs 50 -optimizer ADADELTA -batchsize 50 -dropout 0.5 -model NOT_STATIC -print_freq 20')
+    parser = argparse.ArgumentParser(description='python train.py -dataset MR -lr 0.1 -epochs 50 -optimizer ADADELTA -batchsize 50 -dropout 0.5 -model NOT_STATIC -print_freq 25')
     parser.add_argument('-lr', type=float, default=0.1, help='initial learning rate [default: 0.1]')
     parser.add_argument('-epochs', type=int, default=50, help='number of epochs for train [default: 50]')
     parser.add_argument('-batchsize', type=int, default=50, help='batch size for training [default: 50]')
     parser.add_argument('-optimizer', type=str, default='ADADELTA', help='optimizer [default: ADADELTA]')
     parser.add_argument('-dropout', type=float, default=0.5, help='the probability for dropout [default: 0.5]')
     parser.add_argument('-model', type=str, default='NOT_STATIC', help='model type from [RANDOM, STATIC, NOT_STATIC, MULTICHANNEL]')
-    parser.add_argument('-print_freq', type=int, default=20, help='number of mini-batches to print after [default: 20]')
+    parser.add_argument('-print_freq', type=int, default=25, help='number of mini-batches to print after [default: 25]')
     parser.add_argument('-dataset', type=str, default='MR', help='dataset from [MR, TREC, SUBJ]')
 
     args = parser.parse_args()

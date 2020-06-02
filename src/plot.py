@@ -8,6 +8,7 @@ valid_acc_history = [0.7197750702905342, 0.7591377694470478, 0.7750702905342081,
 
 plt.plot(train_loss_history, label='training loss')
 plt.plot(valid_loss_history, label='validation loss')
+plt.title('MR Dataset')
 plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.legend()
@@ -15,6 +16,7 @@ plt.show()
 
 plt.plot(train_acc_history, label='training acc')
 plt.plot(valid_acc_history, label='validation acc')
+plt.title('MR Dataset')
 plt.xlabel('Epoch')
 plt.ylabel('Accuracy')
 plt.legend()
