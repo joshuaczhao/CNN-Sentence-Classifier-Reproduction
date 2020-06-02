@@ -45,6 +45,7 @@ class Net(nn.Module):
         self.conv1 = nn.Conv2d(1, N_KERN, (3, E_DIMS), 1)
         self.conv2 = nn.Conv2d(1, N_KERN, (4, E_DIMS), 1)
         self.conv3 = nn.Conv2d(1, N_KERN, (5, E_DIMS), 1)
+        self.dropout = nn.Dropout(DROP)
         self.fc1   = nn.Linear(3*N_KERN, C_SIZE)       
         
     def forward(self, x):
@@ -62,7 +63,8 @@ class Net(nn.Module):
         x_f3 = F.max_pool1d(F.relu(self.conv3(x)).squeeze(3), self.M_S_L - 4)
         x = torch.cat((x_f1, x_f2, x_f3), 1)
         
-        x = F.dropout(x, self.DROP, self.TRAIN)
+        # x = F.dropout(x, p=self.DROP, train=self.TRAIN)
+        x = self.dropout(x)
         x = self.fc1(x.squeeze(2))
         
         return x
