@@ -17,7 +17,9 @@ def load_MR_data():
     data = pad(data, max_sen_len)
     data = get_indices(data)
 
-    return data, labels, max_sen_len
+    n_classes = len(np.unique(labels))
+
+    return data, labels, max_sen_len, n_classes
 
 
 def load_subj_data(max_length=40):
@@ -40,7 +42,9 @@ def load_subj_data(max_length=40):
     data = pad(data, max_sen_len)
     data = get_indices(data)
 
-    return data, labels, max_sen_len
+    n_classes = len(np.unique(labels))
+
+    return data, labels, max_sen_len, n_classes
 
 def load_TREC_data(set):
     '''
@@ -76,8 +80,9 @@ def load_TREC_data(set):
     data = pad(data, max_sen_len)
     data = get_indices(data)
 
+    n_classes = len(np.unique(labels))
     if set == "train":
-        return data, labels, max_sen_len
+        return data, labels, max_sen_len, n_classes
     else:
         return data, labels
 
