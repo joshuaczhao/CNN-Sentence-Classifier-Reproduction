@@ -29,14 +29,12 @@ class Net(nn.Module):
             vocabulary_size = int(3e6)
             self.embedding = nn.Embedding(num_embeddings=vocabulary_size, embedding_dim=E_DIMS)
         elif M_TYPE == 'NOT_STATIC':
-            self.embedding = nn.Embedding.from_pretrained(weights)
+            self.embedding = nn.Embedding.from_pretrained(weights, freeze=False)
         elif M_TYPE == 'STATIC':
-            self.embedding = nn.Embedding.from_pretrained(weights)
-            self.embedding.weight.requires_grad = False  
+            self.embedding = nn.Embedding.from_pretrained(weights, freeze=True)
         elif M_TYPE == 'MULTI':
-            self.embedding = nn.Embedding.from_pretrained(weights)
-            self.embedding_static = nn.Embedding.from_pretrained(weights)
-            self.embedding_static.weight.requires_grad = False
+            self.embedding = nn.Embedding.from_pretrained(weights, freeze=False)
+            self.embedding_static = nn.Embedding.from_pretrained(weights, freeze=True)
             self.NUM_INPUT_C = 2
         else:
             print('Invalid M_TYPE')
@@ -58,7 +56,7 @@ class Net(nn.Module):
         x = self.embedding(x)
         x = x.view((-1, 1, self.M_S_L, self.E_DIMS))
         
-        if M_TYPE == 'MULTI':
+        if self.M_TYPE == 'MULTI':
             x_s = self.embedding_static(x)
             x_s = x_s.view((-1, 1, self.M_S_L, self.E_DIMS))
             x = torch.cat((x_s, x), dim=1) # Concatenate along "Cin" dimension
@@ -73,7 +71,6 @@ class Net(nn.Module):
         x_f3 = F.max_pool1d(F.relu(self.conv3(x)).squeeze(3), self.M_S_L - 4)
         x = torch.cat((x_f1, x_f2, x_f3), 1)
         
-        # x = F.dropout(x, p=self.DROP, train=self.TRAIN)
         x = self.dropout(x)
         x = self.fc1(x.squeeze(2))
         
