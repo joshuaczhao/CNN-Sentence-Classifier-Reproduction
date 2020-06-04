@@ -42,13 +42,6 @@ def train_model(args):
     print(f'DATASET={DATASET}; BATCH={BATCH}; LR={LR}; DROPOUT={DROPOUT_RATE}; N_EPOCHS={N_EPOCHS}; OPT={OPTIMIZER}; MODEL={MODEL_TYPE}; \n')
     print(f'DATASET={DATASET}; BATCH={BATCH}; LR={LR}; DROPOUT={DROPOUT_RATE}; N_EPOCHS={N_EPOCHS}; OPT={OPTIMIZER}; MODEL={MODEL_TYPE}; \n', file=f)
 
-    if torch.cuda.is_available():
-        device = torch.device("cuda:0")
-        print("Running on the GPU")
-    else:
-        device = torch.device("cpu")
-        print("Running on the CPU")
-
     if DATASET == 'MR':
         data, labels, max_sen_len, n_classes = load_data.load_MR_data()
     elif DATASET == 'SUBJ':
@@ -62,10 +55,21 @@ def train_model(args):
     if DATASET == 'MR' or DATASET == 'SUBJ':
         x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.1, shuffle=True, stratify=labels)
 
+    print('data loaded')
+
+    if torch.cuda.is_available():
+        device = torch.device("cuda:0")
+        print("Running on the GPU")
+    else:
+        device = torch.device("cpu")
+        print("Running on the CPU")
+
     x_train_tensor = torch.LongTensor(x_train).to(device)
     y_train_tensor = torch.LongTensor(y_train).to(device)
     x_test_tensor = torch.LongTensor(x_test).to(device)
     y_test_tensor = torch.LongTensor(y_test).to(device)
+
+    print('data sent to device')
 
     train_dataset = torch.utils.data.TensorDataset(x_train_tensor, y_train_tensor)
     # trainloader = torch.utils.data.DataLoader(train_dataset, batch_size=BATCH, shuffle=True)
