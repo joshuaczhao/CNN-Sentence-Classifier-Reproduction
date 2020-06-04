@@ -43,7 +43,7 @@ def train_model(args):
     print(f'DATASET={DATASET}; BATCH={BATCH}; LR={LR}; DROPOUT={DROPOUT_RATE}; N_EPOCHS={N_EPOCHS}; OPT={OPTIMIZER}; MODEL={MODEL_TYPE}; \n', file=f)
 
     if DATASET == 'MR':
-        data, labels, max_sen_len, n_classes = load_data.load_MR_data()
+        data, labels, max_sen_len, n_classes, weights = load_data.load_MR_data()
     elif DATASET == 'SUBJ':
         data, labels, max_sen_len, n_classes = load_data.load_subj_data(max_length=40)
     elif DATASET == 'TREC':
@@ -74,7 +74,7 @@ def train_model(args):
     train_dataset = torch.utils.data.TensorDataset(x_train_tensor, y_train_tensor)
     # trainloader = torch.utils.data.DataLoader(train_dataset, batch_size=BATCH, shuffle=True)
 
-    cnn = model.Net(BATCH_SIZE=BATCH, M_TYPE=MODEL_TYPE, E_DIMS=300, M_SENT_LEN=max_sen_len, DROP=DROPOUT_RATE, C_SIZE=n_classes).to(device)
+    cnn = model.Net(EMBEDDINGS=weights, BATCH_SIZE=BATCH, M_TYPE=MODEL_TYPE, E_DIMS=300, M_SENT_LEN=max_sen_len, DROP=DROPOUT_RATE, C_SIZE=n_classes).to(device)
 
     criterion = nn.CrossEntropyLoss()
     if OPTIMIZER == 'SGD':

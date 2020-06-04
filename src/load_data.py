@@ -4,28 +4,28 @@ from gensim.models import KeyedVectors
 
 
 def load_MR_data():
-    '''
+    """
     Returns:
         data - tokenized, padded, indices of MR data samples as 2D list w/dimension [n_samples, max_sentence_length]
         labels - 1D list of integer labels in range [0, n_classes)
         max_sen_len - the maximum length sample in the dataset after word-tokenization
-    '''
+    """
 
     data, labels = load_data_and_labels('data/MR/rt-polarity.pos', 'data/MR/rt-polarity.neg')
 
     data, max_sen_len = tokenize(data)
     data = pad(data, max_sen_len)
-    data = get_indices(data)
+    data, weights = get_indices(data)
 
     n_classes = len(np.unique(labels))
 
-    return data, labels, max_sen_len, n_classes
+    return data, labels, max_sen_len, n_classes, weights
 
 
 def load_subj_data(max_length=40):
-    '''
+    """
         Label Convention: subjective/quote = 0, objective/plot = 1
-    '''
+    """
 
     path1 = 'data/Subj/plot.tok.gt9.5000'
     path2 = 'data/Subj/quote.tok.gt9.5000'
@@ -38,7 +38,7 @@ def load_subj_data(max_length=40):
     labels = [1 for _ in objective_examples] + [0 for _ in subjective_examples]
 
     data, max_sen_len = tokenize(data)
-    data = [s[:40] for s in data]
+    data = [s[:max_length] for s in data]
     data = pad(data, max_sen_len)
     data = get_indices(data)
 
@@ -46,10 +46,11 @@ def load_subj_data(max_length=40):
 
     return data, labels, max_sen_len, n_classes
 
+
 def load_TREC_data():
-    '''
-    Label Convention: Description = 0, Entity = 1, Abbreviation = 2, Human = 3, Number = 4, Location = 5"
-    '''
+    """
+        Label Convention: Description = 0, Entity = 1, Abbreviation = 2, Human = 3, Number = 4, Location = 5"
+    """
 
     ### load TRAIN FILE ###
     path = "data/TREC/TrainTREC.txt"
@@ -121,26 +122,34 @@ def pad(data, max_sen_len):
         sentence = data[i]
         if len(sentence) < max_sen_len:
             diff = max_sen_len - len(sentence)
-            sentence.extend(['<pad>' for x in range(diff)])
+            sentence.extend(['<pad>' for _ in range(diff)])
         data[i] = sentence
     return data
 
 
 def get_indices(data):
-    # Load embedding model
+
     goog_w2v_path = 'data/embedding_models/GoogleNews-vectors-negative300.bin'
     model = KeyedVectors.load_word2vec_format(goog_w2v_path, binary=True)
-
+    vocab_dict = {}
+    weights = [model['pad'], model['unk']]
     for i, sentence in enumerate(data):
         for j, token in enumerate(sentence):
-            if token in model.vocab:
-                sentence[j] = model.vocab[token].index
-            elif token == '<pad>':
-                sentence[j] = 1000000
+
+            if token in vocab_dict:
+                sentence[j] = vocab_dict[token]
             else:
-                sentence[j] = 2000000
+                if token in model.vocab:
+                    weights.append(model[token])
+                    vocab_dict[token] = len(weights) - 1
+                    sentence[j] = len(weights) - 1
+                elif token == '<pad>':
+                    sentence[j] = 0
+                else:
+                    sentence[j] = 1
         data[i] = sentence
-    return data
+
+    return data, weights
 
 
 def clean_str(string):

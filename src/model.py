@@ -5,10 +5,11 @@ import torch.nn.functional as F
 from gensim.models import KeyedVectors
 
 class Net(nn.Module):
-    def __init__(self, BATCH_SIZE, M_TYPE='NOT_STATIC', N_KERN=100, E_DIMS=300, E_NUMB=662109, DROP=0, C_SIZE=2, TRAIN=True, M_SENT_LEN=40):
+    def __init__(self, EMBEDDINGS, BATCH_SIZE, M_TYPE='NOT_STATIC', N_KERN=100, E_DIMS=300, E_NUMB=662109, DROP=0, C_SIZE=2, TRAIN=True, M_SENT_LEN=40):
         super(Net, self).__init__()
 
         # Need to update the way arguments are passed into this, C_SIZE, M_SENT_LEN are incorrect values
+        self.EMBEDDINGS = EMBEDDINGS
         self.BATCH_SIZE = BATCH_SIZE
         self.M_TYPE = M_TYPE
         self.E_DIMS = E_DIMS
@@ -18,23 +19,25 @@ class Net(nn.Module):
         self.C_SIZE = C_SIZE
         self.TRAIN  = TRAIN
         self.M_S_L  = M_SENT_LEN
-
-        path = 'data/embedding_models/GoogleNews-vectors-negative300.bin'
-        embedding_model = KeyedVectors.load_word2vec_format(path, binary=True)
-        weights = torch.FloatTensor(embedding_model.vectors)
-        
         self.NUM_INPUT_C = 1
 
+        # path = 'data/embedding_models/GoogleNews-vectors-negative300.bin'
+        # embedding_model = KeyedVectors.load_word2vec_format(path, binary=True)
+        # weights = torch.FloatTensor(embedding_model.vectors)
+
+        vocab_size = len(EMBEDDINGS)
+        print(f'VOCAB SIZE = {vocab_size}')
+        weights = torch.FloatTensor(EMBEDDINGS)
+
         if M_TYPE == 'RANDOM':
-            vocabulary_size = int(3e6)
-            self.embedding = nn.Embedding(num_embeddings=vocabulary_size, embedding_dim=E_DIMS)
+            self.embedding = nn.Embedding(num_embeddings=vocab_size, embedding_dim=E_DIMS, padding_idx=0)
         elif M_TYPE == 'NOT_STATIC':
-            self.embedding = nn.Embedding.from_pretrained(weights, freeze=False)
+            self.embedding = nn.Embedding.from_pretrained(weights, freeze=False, padding_idx=0)
         elif M_TYPE == 'STATIC':
-            self.embedding = nn.Embedding.from_pretrained(weights, freeze=True)
+            self.embedding = nn.Embedding.from_pretrained(weights, freeze=True, padding_idx=0)
         elif M_TYPE == 'MULTI':
-            self.embedding = nn.Embedding.from_pretrained(weights, freeze=False)
-            self.embedding_static = nn.Embedding.from_pretrained(weights, freeze=True)
+            self.embedding = nn.Embedding.from_pretrained(weights, freeze=False, padding_idx=0)
+            self.embedding_static = nn.Embedding.from_pretrained(weights, freeze=True, padding_idx=0)
             self.NUM_INPUT_C = 2
         else:
             print('Invalid M_TYPE')
