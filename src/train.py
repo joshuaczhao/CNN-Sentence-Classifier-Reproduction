@@ -42,6 +42,13 @@ def train_model(args):
     print(f'DATASET={DATASET}; BATCH={BATCH}; LR={LR}; DROPOUT={DROPOUT_RATE}; N_EPOCHS={N_EPOCHS}; OPT={OPTIMIZER}; MODEL={MODEL_TYPE}; \n')
     print(f'DATASET={DATASET}; BATCH={BATCH}; LR={LR}; DROPOUT={DROPOUT_RATE}; N_EPOCHS={N_EPOCHS}; OPT={OPTIMIZER}; MODEL={MODEL_TYPE}; \n', file=f)
 
+    if torch.cuda.is_available():
+        device = torch.device("cuda:0")
+        print("Running on the GPU")
+    else:
+        device = torch.device("cpu")
+        print("Running on the CPU")
+
     if DATASET == 'MR':
         data, labels, max_sen_len, n_classes = load_data.load_MR_data()
     elif DATASET == 'SUBJ':
@@ -55,15 +62,15 @@ def train_model(args):
     if DATASET == 'MR' or DATASET == 'SUBJ':
         x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.1, shuffle=True, stratify=labels)
 
-    x_train_tensor = torch.LongTensor(x_train)
-    y_train_tensor = torch.LongTensor(y_train)
-    x_test_tensor = torch.LongTensor(x_test)
-    y_test_tensor = torch.LongTensor(y_test)
+    x_train_tensor = torch.LongTensor(x_train).to(device)
+    y_train_tensor = torch.LongTensor(y_train).to(device)
+    x_test_tensor = torch.LongTensor(x_test).to(device)
+    y_test_tensor = torch.LongTensor(y_test).to(device)
 
     train_dataset = torch.utils.data.TensorDataset(x_train_tensor, y_train_tensor)
     # trainloader = torch.utils.data.DataLoader(train_dataset, batch_size=BATCH, shuffle=True)
 
-    cnn = model.Net(BATCH_SIZE=BATCH, M_TYPE=MODEL_TYPE, E_DIMS=300, M_SENT_LEN=max_sen_len, DROP=DROPOUT_RATE, C_SIZE=n_classes)
+    cnn = model.Net(BATCH_SIZE=BATCH, M_TYPE=MODEL_TYPE, E_DIMS=300, M_SENT_LEN=max_sen_len, DROP=DROPOUT_RATE, C_SIZE=n_classes).to(device)
 
     criterion = nn.CrossEntropyLoss()
     if OPTIMIZER == 'SGD':
@@ -76,7 +83,6 @@ def train_model(args):
         print('No optimizer specified')
         return
 
-    
     train_loss_history = []
     train_acc_history = []
     valid_loss_history = []
@@ -94,6 +100,7 @@ def train_model(args):
         for i, data in enumerate(trainloader, 0):
             # get the inputs; data is a list of [inputs, labels]
             inputs, labels = data
+            # inputs, labels = inputs.to(device), labels.to(device)
 
             # zero the parameter gradients
             optimizer.zero_grad()
