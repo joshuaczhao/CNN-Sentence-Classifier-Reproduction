@@ -64,8 +64,8 @@ def train_model(args):
         device = torch.device("cpu")
         print("Running on the CPU")
 
-    x_train_tensor = torch.LongTensor(x_train).to(device)
-    y_train_tensor = torch.LongTensor(y_train).to(device)
+    # x_train_tensor = torch.LongTensor(x_train).to(device)
+    # y_train_tensor = torch.LongTensor(y_train).to(device)
     x_test_tensor = torch.LongTensor(x_test).to(device)
     y_test_tensor = torch.LongTensor(y_test).to(device)
 
@@ -104,7 +104,7 @@ def train_model(args):
         for i, data in enumerate(trainloader, 0):
             # get the inputs; data is a list of [inputs, labels]
             inputs, labels = data
-            # inputs, labels = inputs.to(device), labels.to(device)
+            inputs, labels = inputs.to(device), labels.to(device)
 
             # zero the parameter gradients
             optimizer.zero_grad()
