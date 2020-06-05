@@ -56,13 +56,16 @@ class Net(nn.Module):
         
     def forward(self, x):
 
-        x = self.embedding(x)
-        x = x.view((-1, 1, self.M_S_L, self.E_DIMS))
         
         if self.M_TYPE == 'MULTI':
             x_s = self.embedding_static(x)
             x_s = x_s.view((-1, 1, self.M_S_L, self.E_DIMS))
+            x = self.embedding(x)
+            x = x.view((-1, 1, self.M_S_L, self.E_DIMS))
             x = torch.cat((x_s, x), dim=1) # Concatenate along "Cin" dimension
+        else:
+            x = self.embedding(x)
+            x = x.view((-1, 1, self.M_S_L, self.E_DIMS))
 
         '''
         if self.TYPE == 'STATIC':
