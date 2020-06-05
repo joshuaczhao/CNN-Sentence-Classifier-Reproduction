@@ -6,9 +6,11 @@ import datetime
 from sklearn.model_selection import train_test_split
 import argparse
 import os
+import matplotlib.pyplot as plt
 
 import load_data
 import model
+
 
 def train_model(args):
 
