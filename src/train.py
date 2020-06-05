@@ -165,6 +165,14 @@ def train_model(args):
 
     f.close()
 
+    plt.plot(train_loss_history, label='training loss')
+    plt.plot(valid_loss_history, label='validation loss')
+    plt.title(f'{DATASET} Dataset')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.legend()
+    plt.show()
+
     return cnn
 
 
