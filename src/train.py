@@ -66,6 +66,8 @@ def train_model(args):
 
     # x_train_tensor = torch.LongTensor(x_train).to(device)
     # y_train_tensor = torch.LongTensor(y_train).to(device)
+    x_train_tensor = torch.LongTensor(x_train)
+    y_train_tensor = torch.LongTensor(y_train)
     x_test_tensor = torch.LongTensor(x_test).to(device)
     y_test_tensor = torch.LongTensor(y_test).to(device)
 
