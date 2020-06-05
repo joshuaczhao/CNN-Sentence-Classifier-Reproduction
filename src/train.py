@@ -45,7 +45,7 @@ def train_model(args):
     if DATASET == 'MR':
         data, labels, max_sen_len, n_classes, weights = load_data.load_MR_data()
     elif DATASET == 'SUBJ':
-        data, labels, max_sen_len, n_classes = load_data.load_subj_data(max_length=40)
+        data, labels, max_sen_len, n_classes, weights = load_data.load_subj_data(max_length=40)
     elif DATASET == 'TREC':
         x_train, y_train, x_test, y_test, max_sen_len, n_classes = load_data.load_TREC_data()
     else:
