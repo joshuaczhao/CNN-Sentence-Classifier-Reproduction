@@ -24,6 +24,80 @@ def load_MR_data():
 
     return data, labels, max_sen_len, n_classes, weights
 
+def load_SST(version):
+    """
+       If version is set to 1, load SST1, if set to 2, load SST2
+       SST1 Label Convention: Range of 0 to 4, where 0 is very negative and 4 is very positive
+       SST2 Label Convention: negative = 0, positive = 1
+    """
+    ### load TRAIN FILE ###
+    if version == 1:
+        path1 = "data/SST_1/stsa.fine.train"
+        path2 = "data/SST_1/stsa.fine.phrases.train"
+    else:
+        path1 = "data/SST_2/stsa.binary.train"
+        path2 = "data/SST_2/stsa.binary.phrases.train"
+
+    # concatenate sentences and phrases
+    sst = list(open(path1, "r").readlines())
+    sst_phrases = list(open(path2, "r").readlines())
+    sst.extend(sst_phrases)
+
+    # split into data and labels
+    train_data = []
+    train_labels = []
+    for line in sst:
+        train_data.append(line[2:-1])
+        train_labels.append(int(line[0]))
+
+    ### load DEV FILE ###
+    if version == 1:
+        path = "data/SST_1/stsa.fine.dev"
+    else:
+        path = "data/SST_2/stsa.binary.dev"
+
+    sst_dev = list(open(path, "r").readlines())
+    dev_data = []
+    dev_labels = []
+    for line in sst_dev:
+        dev_data.append(line[2:-1])
+        dev_labels.append(int(line[0]))
+
+    ### load TEST FILE ###
+    if version == 1:
+        path = "data/SST_1/stsa.fine.test"
+    else:
+        path = "data/SST_2/stsa.binary.test"
+
+    sst_test = list(open(path, "r").readlines())
+    test_data = []
+    test_labels = []
+    for line in sst_test:
+        test_data.append(line[2:-1])
+        test_labels.append(int(line[0]))
+
+    train_data = [clean_str(s) for s in train_data]
+    dev_data = [clean_str(s) for s in dev_data]
+    test_data = [clean_str(s) for s in test_data]
+
+    train_data, train_max_sen_len = tokenize(train_data)
+    dev_data, dev_max_sen_len = tokenize(dev_data)
+    test_data, test_max_sen_len = tokenize(test_data)
+
+    max_sen_len = max(train_max_sen_len, dev_max_sen_len, test_max_sen_len)
+
+    train_data = pad(train_data, train_max_sen_len)
+    dev_data = pad(dev_data, dev_max_sen_len)
+    test_data = pad(test_data, test_max_sen_len)
+
+    train_data, weights = get_indices(train_data)
+    dev_data, weights = get_indices(dev_data)
+    test_data, weights = get_indices(test_data)
+
+    n_classes = len(np.unique(train_labels))
+    breakpoint()
+    return train_data, train_labels, dev_data, dev_labels, test_data, test_labels, max_sen_len, n_classes
+
 
 def load_subj_data(max_length=40):
     """
@@ -113,6 +187,51 @@ def load_TREC_data():
 
     return train_data, train_labels, test_data, test_labels, max_sen_len, n_classes
 
+def load_CR_data(max_length=40):
+    '''
+    Label Convention: negative = 0, positive = 1
+    '''
+    path = "data/CR/custrev.all"
+    cr = open(path, "r")
+    # split into data and labels
+    data = []
+    labels = []
+    for line in cr:
+        data.append(line[2:-1])
+        labels.append(int(line[0]))
+
+    data = [clean_str(s) for s in data]
+    data, max_sen_len = tokenize(data)
+    data = pad(data, max_sen_len)
+    data = [s[:max_length] for s in data]
+    data, weights = get_indices(data)
+
+    n_classes = len(np.unique(labels))
+
+    return data, labels, max_sen_len, n_classes, weights
+
+def load_MPQA_data():
+    '''
+    Label Convention: negative = 0, positive = 1
+    '''
+    path = "data/MPQA/mpqa.all"
+    mpqa = open(path, "r")
+
+    data = []
+    labels = []
+    # split into data and labels
+    for line in mpqa:
+        data.append(line[2:-1])
+        labels.append(int(line[0]))
+
+    data = [clean_str(s) for s in data]
+    data, max_sen_len = tokenize(data)
+    data = pad(data, max_sen_len)
+    data, weights = get_indices(data)
+
+    n_classes = len(np.unique(labels))
+
+    return data, labels, max_sen_len, n_classes, weights
 
 def tokenize(data):
     data = [sentence.split(' ') for sentence in data]
@@ -195,9 +314,3 @@ def load_data_and_labels(positive_data_file, negative_data_file):
     negative_labels = [0 for _ in negative_examples]
     y = np.concatenate([positive_labels, negative_labels], 0)
     return [x_text, y]
-
-
-# data, labels, max_sen_len = load_TREC_data(set='train')
-# print(np.shape(data), np.shape(labels))
-# print(data[0:5])
-# print(labels[0:5])
