@@ -46,16 +46,15 @@ def train_model(args):
 
     if DATASET == 'MR':
         data, labels, max_sen_len, n_classes, weights = load_data.load_MR_data()
+        x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.1, shuffle=True, stratify=labels)
     elif DATASET == 'SUBJ':
         data, labels, max_sen_len, n_classes, weights = load_data.load_subj_data(max_length=40)
+        x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.1, shuffle=True, stratify=labels)
     elif DATASET == 'TREC':
         x_train, y_train, x_test, y_test, max_sen_len, n_classes = load_data.load_TREC_data()
     else:
         print('Invalid DATASET input')
         return
-
-    if DATASET == 'MR' or DATASET == 'SUBJ':
-        x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.1, shuffle=True, stratify=labels)
 
     print('data loaded')
 
@@ -66,8 +65,6 @@ def train_model(args):
         device = torch.device("cpu")
         print("Running on the CPU")
 
-    # x_train_tensor = torch.LongTensor(x_train).to(device)
-    # y_train_tensor = torch.LongTensor(y_train).to(device)
     x_train_tensor = torch.LongTensor(x_train)
     y_train_tensor = torch.LongTensor(y_train)
     x_test_tensor = torch.LongTensor(x_test).to(device)
