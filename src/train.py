@@ -46,15 +46,24 @@ def train_model(args):
 
     if DATASET == 'MR':
         data, labels, max_sen_len, n_classes, weights = load_data.load_MR_data()
-        x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.1, shuffle=True, stratify=labels)
+    elif DATASET == 'SST-1':
+        x_train, y_train, x_dev, y_dev, x_test, y_test, max_sen_len, n_classes = load_data.load_SST(1)
+    elif DATASET == 'SST-2':
+        x_train, y_train, x_dev, y_dev, x_test, y_test, max_sen_len, n_classes = load_data.load_SST(2)
     elif DATASET == 'SUBJ':
         data, labels, max_sen_len, n_classes, weights = load_data.load_subj_data(max_length=40)
-        x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.1, shuffle=True, stratify=labels)
     elif DATASET == 'TREC':
         x_train, y_train, x_test, y_test, max_sen_len, n_classes = load_data.load_TREC_data()
+    elif DATASET == 'CR':
+        data, labels, max_sen_len, n_classes, weights = load_data.load_CR_data(max_length=40)
+    elif DATASET == 'MPQA':
+        data, labels, max_sen_len, n_classes, weights = load_data.load_MPQA_data()
     else:
         print('Invalid DATASET input')
         return
+
+    if DATASET == 'MR' or DATASET == 'SUBJ' or DATASET == 'CR' or DATASET == 'MPQA':
+        x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.1, shuffle=True, stratify=labels)
 
     print('data loaded')
 
