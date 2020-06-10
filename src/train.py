@@ -190,7 +190,9 @@ def train_model(args):
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
     plt.legend()
-    plt.savefig(f'{name[:-4]}_GRAPH')
+
+    fig_name = f'outputs/{DATASET}/{MODEL_TYPE}/{datetime.datetime.now().strftime("%m-%d-%Y_%H%M")}_GRAPH'
+    plt.savefig(fig_name)
 
     return cnn
 
