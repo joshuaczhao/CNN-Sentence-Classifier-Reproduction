@@ -12,17 +12,17 @@ f = open(name, 'w')
 models = ['RANDOM', 'STATIC', 'NOT_STATIC', 'MULTI']
 datasets = ['MR', 'SST-1', 'SST-2', 'SUBJ', 'TREC', 'CR', 'MPQA']
 
-scores = np.zeros(shape=(len(datasets), len(models)))
+scores = np.zeros(shape=(len(models), len(datasets)))
 
 for x, model_type in enumerate(models):
     for y, dataset in enumerate(datasets):
 
-        if dataset in ['SST-1', 'SST-2']:
-            continue
+        # if dataset in ['SST-1', 'SST-2']:
+        #     continue
 
         args = Namespace(
             lr=0.01,
-            epochs=100,
+            epochs=200,
             batchsize=50,
             optimizer='ADADELTA',
             dropout=0.1,
@@ -31,7 +31,7 @@ for x, model_type in enumerate(models):
             dataset=dataset
         )
         model, score = train.train_model(args=args)
-        scores[y, x] = score
+        scores[x, y] = score
 
         print(scores)
         print(scores, file=f)

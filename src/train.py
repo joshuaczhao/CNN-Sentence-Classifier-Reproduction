@@ -99,8 +99,8 @@ def train_model(args):
     valid_acc_history = []
     for epoch in range(N_EPOCHS):  # loop over the dataset multiple times
 
-        if epoch > 2:
-            if abs(train_loss_history[-1] - train_loss_history[-2]) < 0.0001:
+        if epoch > 3:
+            if abs(train_loss_history[-1] - train_loss_history[-2]) < 0.0001 and abs(train_loss_history[-2] - train_loss_history[-3]) < 0.0001:
                 break
 
         epoch_start = time.time()
