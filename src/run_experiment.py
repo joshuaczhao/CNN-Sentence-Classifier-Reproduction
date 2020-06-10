@@ -16,6 +16,10 @@ scores = np.zeros(shape=(len(datasets), len(models)))
 
 for x, model_type in enumerate(models):
     for y, dataset in enumerate(datasets):
+
+        if dataset in ['SST-1', 'SST-2']:
+            continue
+
         args = Namespace(
             lr=0.01,
             epochs=100,
