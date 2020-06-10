@@ -102,6 +102,9 @@ def train_model(args):
     valid_loss_history = []
     valid_acc_history = []
     for epoch in range(N_EPOCHS):  # loop over the dataset multiple times
+
+        # if valid_loss_history[-1] -
+
         epoch_start = time.time()
         print(f'===== EPOCH {epoch + 1}/{N_EPOCHS} =====', file=f)
         print(f'===== EPOCH {epoch + 1}/{N_EPOCHS} =====')
@@ -196,7 +199,7 @@ def train_model(args):
     fig_name = f'outputs/{DATASET}/{MODEL_TYPE}/{datetime.datetime.now().strftime("%m-%d-%Y_%H%M")}_GRAPH'
     plt.savefig(fig_name)
 
-    return cnn
+    return cnn, max(valid_acc_history)
 
 
 if __name__ == '__main__':

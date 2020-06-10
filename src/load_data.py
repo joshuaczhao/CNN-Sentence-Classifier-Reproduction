@@ -14,11 +14,8 @@ def load_MR_data():
     data, labels = load_data_and_labels('data/MR/rt-polarity.pos', 'data/MR/rt-polarity.neg')
 
     data, max_sen_len = tokenize(data)
-    print('tokenized')
     data = pad(data, max_sen_len)
-    print('padded')
     data, _, _, weights = get_indices(data)
-    print('got indices')
 
     n_classes = len(np.unique(labels))
 
@@ -202,7 +199,7 @@ def load_CR_data(max_length=40):
 
     data, max_sen_len = tokenize(data, max_len=max_length)
     data = pad(data, max_sen_len)
-    data, weights = get_indices(data)
+    data, _, _, weights = get_indices(data)
 
     n_classes = len(np.unique(labels))
 
@@ -226,7 +223,7 @@ def load_MPQA_data():
 
     data, max_sen_len = tokenize(data)
     data = pad(data, max_sen_len)
-    data, weights = get_indices(data)
+    data, _, _, weights = get_indices(data)
 
     n_classes = len(np.unique(labels))
 
@@ -263,7 +260,6 @@ def get_indices(data, dev_data=None, test_data=None):
 
     goog_w2v_path = 'data/embedding_models/GoogleNews-vectors-negative300.bin'
     model = KeyedVectors.load_word2vec_format(goog_w2v_path, binary=True)
-    print('Loaded word2vec model')
     vocab_dict = {}
     weights = [model['pad'], model['unk']]
     for i, sentence in enumerate(data):
