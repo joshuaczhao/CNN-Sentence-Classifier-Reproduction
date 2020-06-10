@@ -65,8 +65,6 @@ def train_model(args):
     if DATASET == 'MR' or DATASET == 'SUBJ' or DATASET == 'CR' or DATASET == 'MPQA':
         x_train, x_test, y_train, y_test = train_test_split(data, labels, test_size=0.1, shuffle=True, stratify=labels)
 
-    print('data loaded')
-
     if torch.cuda.is_available():
         device = torch.device("cuda:0")
         print("Running on the GPU")
@@ -78,8 +76,6 @@ def train_model(args):
     y_train_tensor = torch.LongTensor(y_train)
     x_test_tensor = torch.LongTensor(x_test).to(device)
     y_test_tensor = torch.LongTensor(y_test).to(device)
-
-    print('data sent to device')
 
     train_dataset = torch.utils.data.TensorDataset(x_train_tensor, y_train_tensor)
     # trainloader = torch.utils.data.DataLoader(train_dataset, batch_size=BATCH, shuffle=True)
