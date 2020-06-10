@@ -190,7 +190,7 @@ def train_model(args):
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
     plt.legend()
-    plt.savefig(f'{name}_GRAPH')
+    plt.savefig(f'{name[:-4]}_GRAPH')
 
     return cnn
 

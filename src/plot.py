@@ -12,6 +12,8 @@ plt.title('MR Dataset')
 plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.legend()
+name = 'outputs/fig_name2.txt'
+plt.savefig(f'{name[:-4]}')
 plt.show()
 
 plt.plot(train_acc_history, label='training acc')
