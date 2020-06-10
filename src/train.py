@@ -59,7 +59,7 @@ def train_model(args):
     elif DATASET == 'MPQA':
         data, labels, max_sen_len, n_classes, weights = load_data.load_MPQA_data()
     else:
-        print('Invalid DATASET input')
+        print('Invalid DATASET. Must be from [MR, SST-1, SST-2, SUBJ, TREC, CR, MPQA]')
         return
 
     if DATASET == 'MR' or DATASET == 'SUBJ' or DATASET == 'CR' or DATASET == 'MPQA':
@@ -174,13 +174,23 @@ def train_model(args):
 
     f.close()
 
+    plt.subplot(1, 2, 1)
     plt.plot(train_loss_history, label='training loss')
-    plt.plot(valid_loss_history, label='validation loss')
-    plt.title(f'{DATASET} Dataset')
+    plt.plot(valid_loss_history, label='test loss')
+    plt.title(f'{DATASET} Dataset - {MODEL_TYPE} - Loss')
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.legend()
-    plt.show()
+    # plt.savefig(f'{name}_LOSS')
+
+    plt.subplot(1, 2, 2)
+    plt.plot(train_acc_history, label='training acc')
+    plt.plot(valid_acc_history, label='test acc')
+    plt.title(f'{DATASET} Dataset - {MODEL_TYPE} - Accuracy')
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy')
+    plt.legend()
+    plt.savefig(f'{name}_GRAPH')
 
     return cnn
 
@@ -189,15 +199,15 @@ if __name__ == '__main__':
 
     print()
 
-    parser = argparse.ArgumentParser(description='python train.py -dataset MR -lr 0.1 -epochs 50 -optimizer ADADELTA -batchsize 50 -dropout 0.5 -model NOT_STATIC -print_freq 25')
+    parser = argparse.ArgumentParser(description='python train.py -dataset MR -lr 0.1 -epochs 50 -optimizer ADADELTA -batchsize 50 -dropout 0.5 -model NOT_STATIC -print_freq 75')
     parser.add_argument('-lr', type=float, default=0.1, help='initial learning rate [default: 0.1]')
     parser.add_argument('-epochs', type=int, default=50, help='number of epochs for train [default: 50]')
     parser.add_argument('-batchsize', type=int, default=50, help='batch size for training [default: 50]')
     parser.add_argument('-optimizer', type=str, default='ADADELTA', help='optimizer [default: ADADELTA]')
     parser.add_argument('-dropout', type=float, default=0.5, help='the probability for dropout [default: 0.5]')
     parser.add_argument('-model', type=str, default='NOT_STATIC', help='model type from [RANDOM, STATIC, NOT_STATIC, MULTI]')
-    parser.add_argument('-print_freq', type=int, default=25, help='number of mini-batches to print after [default: 25]')
-    parser.add_argument('-dataset', type=str, default='MR', help='dataset from [MR, TREC, SUBJ]')
+    parser.add_argument('-print_freq', type=int, default=75, help='number of mini-batches to print after [default: 75]')
+    parser.add_argument('-dataset', type=str, default='MR', help='dataset from [MR, SST-1, SST-2, SUBJ, TREC, CR, MPQA]')
 
     args = parser.parse_args()
     cnn = train_model(args)
