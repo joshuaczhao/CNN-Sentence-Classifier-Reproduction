@@ -162,9 +162,10 @@ def train_model(args):
     print('Finished Training', file=f)
     print('Finished Training')
 
-    print(f'MAX TEST ACC = {max(valid_acc_history):.4f}')
     print('train_loss_history, train_acc_history, valid_loss_history, valid_acc_history', file=f)
     print(f'{train_loss_history}\n {train_acc_history}\n {valid_loss_history}\n {valid_acc_history}\n', file=f)
+    print(f'MAX TEST ACC = {max(valid_acc_history):.4f}')
+    print(f'MAX TEST ACC = {max(valid_acc_history):.4f}', file=f)
 
     total_time = time.time() - start
     mins = int(total_time / 60)

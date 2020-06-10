@@ -255,10 +255,10 @@ def get_indices(data, dev_data=None, test_data=None):
     l2, l3 = 0, 0
 
     if dev_data:
-        data.append(dev_data)
+        data.extend(dev_data)
         l2 = len(dev_data)
     if test_data:
-        data.append(test_data)
+        data.extend(test_data)
         l3 = len(test_data)
 
     goog_w2v_path = 'data/embedding_models/GoogleNews-vectors-negative300.bin'
