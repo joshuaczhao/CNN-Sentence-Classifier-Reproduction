@@ -113,14 +113,13 @@ def load_SUBJ_data(max_length=40):
     data = [clean_str(s.strip()) for s in objective_examples + subjective_examples]
     labels = [1 for _ in objective_examples] + [0 for _ in subjective_examples]
 
-    data, max_sen_len = tokenize(data)
+    data, max_sen_len = tokenize(data, max_len=max_length)
     data = pad(data, max_sen_len)
-    data = [s[:max_length] for s in data]
     data, _, _, weights = get_indices(data)
 
     n_classes = len(np.unique(labels))
 
-    return data, labels, max_sen_len, n_classes, weights
+    return data, labels, min(max_length, max_sen_len), n_classes, weights
 
 
 def load_TREC_data():
@@ -201,9 +200,8 @@ def load_CR_data(max_length=40):
         labels.append(int(line[0]))
     data = [clean_str(s) for s in data]
 
-    data, max_sen_len = tokenize(data)
+    data, max_sen_len = tokenize(data, max_len=max_length)
     data = pad(data, max_sen_len)
-    data = [s[:max_length] for s in data]
     data, weights = get_indices(data)
 
     n_classes = len(np.unique(labels))
@@ -235,8 +233,8 @@ def load_MPQA_data():
     return data, labels, max_sen_len, n_classes, weights
 
 
-def tokenize(data):
-    data = [sentence.split(' ') for sentence in data]
+def tokenize(data, max_len=None):
+    data = [sentence.split(' ')[0:max_len] for sentence in data]
     max_sentence = len(max(data, key=len))
     return data, max_sentence
 
