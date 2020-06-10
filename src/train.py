@@ -162,7 +162,7 @@ def train_model(args):
     print('Finished Training', file=f)
     print('Finished Training')
 
-    print(f'MAX VALIDATION ACC = {max(valid_acc_history):.4f}')
+    print(f'MAX TEST ACC = {max(valid_acc_history):.4f}')
     print('train_loss_history, train_acc_history, valid_loss_history, valid_acc_history', file=f)
     print(f'{train_loss_history}\n {train_acc_history}\n {valid_loss_history}\n {valid_acc_history}\n', file=f)
 
@@ -174,6 +174,7 @@ def train_model(args):
 
     f.close()
 
+    fig, axs = plt.subplots(2, 1, figsize=(12, 4))
     plt.subplot(1, 2, 1)
     plt.plot(train_loss_history, label='training loss')
     plt.plot(valid_loss_history, label='test loss')
