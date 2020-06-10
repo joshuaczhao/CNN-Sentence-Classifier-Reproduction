@@ -1,6 +1,10 @@
 import train
 from argparse import Namespace
 import numpy as np
+import datetime
+
+name = f'outputs/experiments/{datetime.datetime.now().strftime("%m-%d-%Y_%H%M")}.txt'
+f = open(name, "w")
 
 models = ['RANDOM', 'STATIC', 'NOT_STATIC', 'MULTI']
 datasets = ['MR', 'SST-1', 'SST-2', 'SUBJ', 'TREC', 'CR', 'MPQA']
@@ -22,4 +26,5 @@ for x, model_type in enumerate(models):
         model, score = train.train_model(args=args)
         scores[y, x] = score
 
-print(scores)
+        print(scores)
+        print(scores, file=f)
