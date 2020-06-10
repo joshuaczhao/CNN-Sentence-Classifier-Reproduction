@@ -4,7 +4,7 @@ import numpy as np
 import datetime
 
 name = f'outputs/experiments/{datetime.datetime.now().strftime("%m-%d-%Y_%H%M")}.txt'
-f = open(name, "w")
+f = open(name, 'w')
 
 models = ['RANDOM', 'STATIC', 'NOT_STATIC', 'MULTI']
 datasets = ['MR', 'SST-1', 'SST-2', 'SUBJ', 'TREC', 'CR', 'MPQA']
