@@ -47,13 +47,13 @@ def train_model(args):
     if DATASET == 'MR':
         data, labels, max_sen_len, n_classes, weights = load_data.load_MR_data()
     elif DATASET == 'SST-1':
-        x_train, y_train, x_dev, y_dev, x_test, y_test, max_sen_len, n_classes = load_data.load_SST(1)
+        x_train, y_train, x_dev, y_dev, x_test, y_test, max_sen_len, n_classes, weights = load_data.load_SST(version=1)
     elif DATASET == 'SST-2':
-        x_train, y_train, x_dev, y_dev, x_test, y_test, max_sen_len, n_classes = load_data.load_SST(2)
+        x_train, y_train, x_dev, y_dev, x_test, y_test, max_sen_len, n_classes, weights = load_data.load_SST(version=2)
     elif DATASET == 'SUBJ':
-        data, labels, max_sen_len, n_classes, weights = load_data.load_subj_data(max_length=40)
+        data, labels, max_sen_len, n_classes, weights = load_data.load_SUBJ_data(max_length=40)
     elif DATASET == 'TREC':
-        x_train, y_train, x_test, y_test, max_sen_len, n_classes = load_data.load_TREC_data()
+        x_train, y_train, x_test, y_test, max_sen_len, n_classes, weights = load_data.load_TREC_data()
     elif DATASET == 'CR':
         data, labels, max_sen_len, n_classes, weights = load_data.load_CR_data(max_length=40)
     elif DATASET == 'MPQA':
@@ -162,6 +162,7 @@ def train_model(args):
     print('Finished Training', file=f)
     print('Finished Training')
 
+    print(f'MAX VALIDATION ACC = {max(valid_acc_history):.4f}')
     print('train_loss_history, train_acc_history, valid_loss_history, valid_acc_history', file=f)
     print(f'{train_loss_history}\n {train_acc_history}\n {valid_loss_history}\n {valid_acc_history}\n', file=f)
 

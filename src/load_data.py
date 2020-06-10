@@ -17,12 +17,13 @@ def load_MR_data():
     print('tokenized')
     data = pad(data, max_sen_len)
     print('padded')
-    data, weights = get_indices(data)
+    data, _, _, weights = get_indices(data)
     print('got indices')
 
     n_classes = len(np.unique(labels))
 
     return data, labels, max_sen_len, n_classes, weights
+
 
 def load_SST(version):
     """
@@ -86,20 +87,18 @@ def load_SST(version):
 
     max_sen_len = max(train_max_sen_len, dev_max_sen_len, test_max_sen_len)
 
-    train_data = pad(train_data, train_max_sen_len)
-    dev_data = pad(dev_data, dev_max_sen_len)
-    test_data = pad(test_data, test_max_sen_len)
+    train_data = pad(train_data, max_sen_len)
+    dev_data = pad(dev_data, max_sen_len)
+    test_data = pad(test_data, max_sen_len)
 
-    train_data, weights = get_indices(train_data)
-    dev_data, weights = get_indices(dev_data)
-    test_data, weights = get_indices(test_data)
+    train_data, dev_data, test_data, weights = get_indices(train_data, dev_data, test_data)
 
     n_classes = len(np.unique(train_labels))
-    breakpoint()
-    return train_data, train_labels, dev_data, dev_labels, test_data, test_labels, max_sen_len, n_classes
+
+    return train_data, train_labels, dev_data, dev_labels, test_data, test_labels, max_sen_len, n_classes, weights
 
 
-def load_subj_data(max_length=40):
+def load_SUBJ_data(max_length=40):
     """
         Label Convention: subjective/quote = 0, objective/plot = 1
     """
@@ -110,14 +109,14 @@ def load_subj_data(max_length=40):
     # Load data from files
     objective_examples = list(open(path1, "r", encoding='ISO-8859-1').readlines())
     subjective_examples = list(open(path2, "r", encoding="ISO-8859-1").readlines())
-    # Split by words
+
     data = [clean_str(s.strip()) for s in objective_examples + subjective_examples]
     labels = [1 for _ in objective_examples] + [0 for _ in subjective_examples]
 
     data, max_sen_len = tokenize(data)
-    data = [s[:max_length] for s in data]
     data = pad(data, max_sen_len)
-    data, weights = get_indices(data)
+    data = [s[:max_length] for s in data]
+    data, _, _, weights = get_indices(data)
 
     n_classes = len(np.unique(labels))
 
@@ -180,12 +179,13 @@ def load_TREC_data():
 
     train_data = pad(train_data, max_sen_len)
     test_data = pad(test_data, max_sen_len)
-    train_data = get_indices(train_data)
-    test_data = get_indices(test_data)
+
+    train_data, test_data, _, weights = get_indices(train_data, test_data)
 
     n_classes = len(np.unique(train_labels))
 
-    return train_data, train_labels, test_data, test_labels, max_sen_len, n_classes
+    return train_data, train_labels, test_data, test_labels, max_sen_len, n_classes, weights
+
 
 def load_CR_data(max_length=40):
     '''
@@ -199,8 +199,8 @@ def load_CR_data(max_length=40):
     for line in cr:
         data.append(line[2:-1])
         labels.append(int(line[0]))
-
     data = [clean_str(s) for s in data]
+
     data, max_sen_len = tokenize(data)
     data = pad(data, max_sen_len)
     data = [s[:max_length] for s in data]
@@ -209,6 +209,7 @@ def load_CR_data(max_length=40):
     n_classes = len(np.unique(labels))
 
     return data, labels, max_sen_len, n_classes, weights
+
 
 def load_MPQA_data():
     '''
@@ -223,8 +224,8 @@ def load_MPQA_data():
     for line in mpqa:
         data.append(line[2:-1])
         labels.append(int(line[0]))
-
     data = [clean_str(s) for s in data]
+
     data, max_sen_len = tokenize(data)
     data = pad(data, max_sen_len)
     data, weights = get_indices(data)
@@ -232,6 +233,7 @@ def load_MPQA_data():
     n_classes = len(np.unique(labels))
 
     return data, labels, max_sen_len, n_classes, weights
+
 
 def tokenize(data):
     data = [sentence.split(' ') for sentence in data]
@@ -249,7 +251,17 @@ def pad(data, max_sen_len):
     return data
 
 
-def get_indices(data):
+def get_indices(data, dev_data=None, test_data=None):
+
+    l1 = len(data)
+    l2, l3 = 0, 0
+
+    if dev_data:
+        data.append(dev_data)
+        l2 = len(dev_data)
+    if test_data:
+        data.append(test_data)
+        l3 = len(test_data)
 
     goog_w2v_path = 'data/embedding_models/GoogleNews-vectors-negative300.bin'
     model = KeyedVectors.load_word2vec_format(goog_w2v_path, binary=True)
@@ -272,7 +284,7 @@ def get_indices(data):
                     sentence[j] = 1
         data[i] = sentence
 
-    return data, weights
+    return data[0:l1], data[l1:l1+l2], data[l1+l2:l1+l2+l3], weights
 
 
 def clean_str(string):
