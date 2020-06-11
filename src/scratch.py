@@ -1,94 +1,25 @@
-import gensim
-from gensim.test.utils import datapath
-from gensim.models import KeyedVectors
-from gensim.models.keyedvectors import KeyedVectors
-import gensim.downloader as api
-import torch
-import data_helpers
-import os
-import numpy as np
 
-import torchtext
-import torchtext.data as data
-from torchtext.vocab import GloVe
-import torchtext.datasets as datasets
-from torchtext.data import get_tokenizer
+ex1 = [ [0.69634489, 0.        , 0.        , 0.85      , 0.868     , 0.82010582, 0.81809614],
+        [0.80506092, 0.        , 0.        , 0.905     , 0.852     , 0.81216931, 0.88124411],
+        [0.79662605, 0.        , 0.        , 0.886     , 0.762     , 0.8015873 , 0.90574929],
+        [0.82286785, 0.        , 0.        , 0.919     , 0.87      , 0.84126984, 0.89632422]]
 
-import model
+ex1 = [[69.63,  0.  ,  0.  , 85.  , 86.8 , 82.01, 81.81],
+       [80.51,  0.  ,  0.  , 90.5 , 85.2 , 81.22, 88.12],
+       [79.66,  0.  ,  0.  , 88.6 , 76.2 , 80.16, 90.57],
+       [82.29,  0.  ,  0.  , 91.9 , 87.  , 84.13, 89.63]]
 
+ex2 = [ [0.71696345, 0.25701357, 0.73915431, 0.877,      0.848,      0.84126984, 0.80961357],
+        [0.82567948, 0.39683258, 0.84129599, 0.92,       0.882,      0.85978836, 0.90951932],
+        [0.78725398, 0.28144796, 0.81823174, 0.901,      0.82,       0.84391534, 0.88595664],
+        [0.82005623, 0.39683258, 0.,         0.,         0.,         0.,         0.        ]]
 
-x_text, y = data_helpers.load_data_and_labels('data/MR/rt-polarity.pos', 'data/MR/rt-polarity.neg')
-# print(len(x_text), len(y))
+ex2 = [[71.7, 25.7, 73.9, 87.7, 84.8, 84.1, 81. ],
+       [82.6, 39.7, 84.1, 92. , 88.2, 86. , 91. ],
+       [78.7, 28.1, 81.8, 90.1, 82. , 84.4, 88.6],
+       [82. , 39.7,  0. ,  0. ,  0. ,  0. ,  0. ]]
 
-review_data = x_text[0:2]
-tokenizer = get_tokenizer("basic_english")
-review_data = [tokenizer(line) for line in review_data]
-labels = y[0:10]
-
-TEXT = data.Field(sequential=True, use_vocab=True, fix_length=None, lower=True)
-glove_path = 'data/embedding_models/glove.twitter.27B/glove.twitter.27B.50d.txt'
-path = 'data/embedding_models/GoogleNews-vectors-negative300.bin'
-w2v_path = 'data/embedding_models/GoogleNews-w2v_format.txt'
-vectors = torchtext.vocab.Vectors(name=w2v_path, cache=None)
-# vectors = torchtext.vocab.GloVe(name='6B', dim=50)
-TEXT.build_vocab(review_data, max_size=None, min_freq=1, vectors=vectors)
-processsed_data = TEXT.process(review_data)
-print(processsed_data)
-print("Output data shape", processsed_data.shape)
-print("Vocab tensor shape", TEXT.vocab.vectors.size())
-print(len(vectors.stoi.keys()))
-print(TEXT.vocab.stoi)
-
-
-embedding = torch.nn.Embedding.from_pretrained(TEXT.vocab.vectors)
-
-# input = [batch_size, in_channels, max_sentence_len, embedding_dim]
-# x = processsed_data
-input = torch.LongTensor([[a for a in range(40)], [a for a in range(40)]])
-cnn = model.Net(E_DIMS=25)
-out = cnn.forward(input)
-print(out)
-
-# cleaned_tokens = [data_helpers.clean_str(line).split() for line in data]
-# print(np.shape(cleaned_tokens))
-# print(cleaned_tokens[0])
-#
-#
-# ''' # Convert glove embedding file to gensim compatible
-# from gensim.scripts.glove2word2vec import glove2word2vec
-# # glove2word2vec(glove_input_file=path, word2vec_output_file=path2)
-# '''
-#
-# Load embedding model
-# path = 'data/embedding_models/GoogleNews-vectors-negative300.bin'
-# save_path = 'data/embedding_models/GoogleNews-w2v_format.txt'
-# # path = 'data/embedding_models/glove.twitter.27B/converted_25d.txt'
-# model = KeyedVectors.load_word2vec_format(save_path, binary=True)
-#
-# print("Embeddings model loaded. vocabulary size = ", len(model.vocab))
-#
-# model.wv.save_word2vec_format(save_path)
-#
-#
-# # print(cleaned_tokens[1])
-# # print(model[cleaned_tokens[1]])
-# # indices = [model[line] for line in cleaned_tokens]
-# # print(indices.shape, indices[0])
-#
-#
-# weights = torch.FloatTensor(model.vectors)
-# embedding = torch.nn.Embedding.from_pretrained(weights)
-# indices = [model.vocab[word].index for word in cleaned_tokens[1]]
-# print(indices)
-# output = embedding(torch.LongTensor(indices))
-# print(output)
-
-'''
-[[0.69634489, 0.        , 0.        , 0.85      , 0.868     , 0.82010582, 0.81809614],
- [0.80506092, 0.        , 0.        , 0.905     , 0.852     , 0.81216931, 0.88124411],
- [0.79662605, 0.        , 0.        , 0.886     , 0.762     , 0.8015873 , 0.90574929],
- [0.82286785, 0.        , 0.        , 0.919     , 0.87      , 0.84126984, 0.89632422]]
-'''
-
-
-
+max12 = [[71.7, 25.7, 73.9, 87.7, 86.8, 84.1, 81.8],
+         [82.6, 39.7, 84.1, 92. , 88.2, 86. , 91. ],
+         [79.7, 28.1, 81.8, 90.1, 82. , 84.4, 90.6],
+         [82.3, 39.7,  0. , 91.9, 87. , 84.1, 89.6]]

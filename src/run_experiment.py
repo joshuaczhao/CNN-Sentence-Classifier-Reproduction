@@ -27,7 +27,7 @@ for x, model_type in enumerate(models):
             optimizer='ADADELTA',
             dropout=0.1,
             model=model_type,
-            print_freq=200,
+            print_freq=500,
             dataset=dataset
         )
         model, score = train.train_model(args=args)
