@@ -3,3 +3,4 @@ src/.vector_cache/*
 venv
 __pycache__
 .DS_Store
+.idea
